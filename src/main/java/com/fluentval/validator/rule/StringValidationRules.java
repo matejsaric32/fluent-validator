@@ -18,7 +18,7 @@ public final class StringValidationRules {
             if (value == null || value.isBlank()) {
                 result.addFailure(
                     new ValidationResult.Failure(
-                        new StringValidationMetadata.NotBlank(identifier)
+                        StringValidationMetadata.notBlank(identifier)
                     )
                 );
             }
@@ -35,7 +35,7 @@ public final class StringValidationRules {
             if (value.trim().length() > max) {
                 result.addFailure(
                     new ValidationResult.Failure(
-                        new StringValidationMetadata.MaxLength(identifier, max)
+                        StringValidationMetadata.maxLength(identifier, max)
                     )
                 );
             }
@@ -52,7 +52,7 @@ public final class StringValidationRules {
             if (value.trim().length() < min) {
                 result.addFailure(
                     new ValidationResult.Failure(
-                        new StringValidationMetadata.MinLength(identifier, min)
+                        StringValidationMetadata.minLength(identifier, min)
                     )
                 );
             }
@@ -69,7 +69,7 @@ public final class StringValidationRules {
             if (value.trim().length() != length) {
                 result.addFailure(
                     new ValidationResult.Failure(
-                        new StringValidationMetadata.ExactLength(identifier, length)
+                        StringValidationMetadata.exactLength(identifier, length)
                     )
                 );
             }
@@ -86,7 +86,7 @@ public final class StringValidationRules {
             if (!pattern.matcher(value).matches()) {
                 result.addFailure(
                     new ValidationResult.Failure(
-                        new StringValidationMetadata.Matches(identifier, pattern)
+                        StringValidationMetadata.matches(identifier, pattern)
                     )
                 );
             }
@@ -103,7 +103,7 @@ public final class StringValidationRules {
             if (Arrays.stream(allowedValues).noneMatch(value::equals)) {
                 result.addFailure(
                     new ValidationResult.Failure(
-                        new StringValidationMetadata.OneOf(identifier, allowedValues)
+                        StringValidationMetadata.oneOf(identifier, allowedValues)
                     )
                 );
             }
@@ -121,7 +121,7 @@ public final class StringValidationRules {
                 allowed.equalsIgnoreCase(value))) {
                 result.addFailure(
                     new ValidationResult.Failure(
-                        new StringValidationMetadata.OneOfIgnoreCase(identifier, allowedValues)
+                        StringValidationMetadata.oneOfIgnoreCase(identifier, allowedValues)
                     )
                 );
             }
@@ -138,7 +138,7 @@ public final class StringValidationRules {
             if (!value.startsWith(prefix)) {
                 result.addFailure(
                     new ValidationResult.Failure(
-                        new StringValidationMetadata.StartsWith(identifier, prefix)
+                        StringValidationMetadata.startsWith(identifier, prefix)
                     )
                 );
             }
@@ -155,7 +155,7 @@ public final class StringValidationRules {
             if (!value.endsWith(suffix)) {
                 result.addFailure(
                     new ValidationResult.Failure(
-                        new StringValidationMetadata.EndsWith(identifier, suffix)
+                        StringValidationMetadata.endsWith(identifier, suffix)
                     )
                 );
             }
@@ -172,7 +172,7 @@ public final class StringValidationRules {
             if (!value.contains(substring)) {
                 result.addFailure(
                     new ValidationResult.Failure(
-                        new StringValidationMetadata.Contains(identifier, substring)
+                        StringValidationMetadata.contains(identifier, substring)
                     )
                 );
             }
@@ -189,7 +189,7 @@ public final class StringValidationRules {
             if (!value.matches("\\d+")) {
                 result.addFailure(
                     new ValidationResult.Failure(
-                        new StringValidationMetadata.Numeric(identifier)
+                        StringValidationMetadata.numeric(identifier)
                     )
                 );
             }
@@ -206,7 +206,7 @@ public final class StringValidationRules {
             if (!value.matches("[a-zA-Z0-9]+")) {
                 result.addFailure(
                     new ValidationResult.Failure(
-                        new StringValidationMetadata.Alphanumeric(identifier)
+                        StringValidationMetadata.alphanumeric(identifier)
                     )
                 );
             }
@@ -223,7 +223,7 @@ public final class StringValidationRules {
             if (!value.equals(value.toUpperCase())) {
                 result.addFailure(
                     new ValidationResult.Failure(
-                        new StringValidationMetadata.Uppercase(identifier)
+                        StringValidationMetadata.uppercase(identifier)
                     )
                 );
             }
@@ -240,7 +240,7 @@ public final class StringValidationRules {
             if (!value.equals(value.toLowerCase())) {
                 result.addFailure(
                     new ValidationResult.Failure(
-                        new StringValidationMetadata.Lowercase(identifier)
+                        StringValidationMetadata.lowercase(identifier)
                     )
                 );
             }
@@ -257,7 +257,7 @@ public final class StringValidationRules {
             if (value.chars().anyMatch(Character::isWhitespace)) {
                 result.addFailure(
                     new ValidationResult.Failure(
-                        new StringValidationMetadata.NoWhitespace(identifier)
+                        StringValidationMetadata.noWhitespace(identifier)
                     )
                 );
             }
@@ -274,7 +274,7 @@ public final class StringValidationRules {
             if (Character.isWhitespace(value.charAt(0))) {
                 result.addFailure(
                     new ValidationResult.Failure(
-                        new StringValidationMetadata.NoLeadingWhitespace(identifier)
+                        StringValidationMetadata.noLeadingWhitespace(identifier)
                     )
                 );
             }
@@ -291,7 +291,7 @@ public final class StringValidationRules {
             if (Character.isWhitespace(value.charAt(value.length() - 1))) {
                 result.addFailure(
                     new ValidationResult.Failure(
-                        new StringValidationMetadata.NoTrailingWhitespace(identifier)
+                        StringValidationMetadata.noTrailingWhitespace(identifier)
                     )
                 );
             }
@@ -308,7 +308,7 @@ public final class StringValidationRules {
             if (value.matches(".*\\s{2,}.*")) {
                 result.addFailure(
                     new ValidationResult.Failure(
-                        new StringValidationMetadata.NoConsecutiveWhitespace(identifier)
+                        StringValidationMetadata.noConsecutiveWhitespace(identifier)
                     )
                 );
             }
@@ -325,7 +325,7 @@ public final class StringValidationRules {
             if (!value.equals(value.trim())) {
                 result.addFailure(
                     new ValidationResult.Failure(
-                        new StringValidationMetadata.Trimmed(identifier)
+                        StringValidationMetadata.trimmed(identifier)
                     )
                 );
             }
@@ -343,7 +343,7 @@ public final class StringValidationRules {
             if (!value.equals(normalized)) {
                 result.addFailure(
                     new ValidationResult.Failure(
-                        new StringValidationMetadata.ProperSpacing(identifier)
+                        StringValidationMetadata.properSpacing(identifier)
                     )
                 );
             }

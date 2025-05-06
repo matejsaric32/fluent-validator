@@ -4,7 +4,6 @@ import com.fluentval.validator.ValidationIdentifier;
 import com.fluentval.validator.message.MessageParameter;
 import lombok.Getter;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -19,10 +18,6 @@ public abstract class StringValidationMetadata extends ValidationMetadata {
 
         // Always add the field identifier as a parameter
         addMessageParameter(MessageParameter.FIELD, identifier.value());
-    }
-
-    protected void addMessageParameter(MessageParameter param, String value) {
-        addMessageParameter(param.getKey(), value);
     }
 
     public static final class NotBlank extends StringValidationMetadata {

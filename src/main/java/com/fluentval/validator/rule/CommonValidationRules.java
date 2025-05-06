@@ -12,26 +12,12 @@ public final class CommonValidationRules {
         // Utility class
     }
 
-    private static final String NOT_NULL_CODE = "VGG01";
-    private static final String MUST_BE_NULL_CODE = "VGG02";
-    private static final String IS_EQUAL_CODE = "VGG03";
-    private static final String IS_NOT_EQUAL_CODE = "VGG04";
-    private static final String SATISFIES_CODE = "VGG05";
-    private static final String IS_INSTANCE_OF_CODE = "VGG06";
-    private static final String IS_NOT_INSTANCE_OF_CODE = "VGG07";
-    private static final String IS_SAME_AS_CODE = "VGG08";
-    private static final String IS_NOT_SAME_AS_CODE = "VGG09";
-
     public static <T> ValidationRule<T> notNull() {
         return (value, result, identifier) -> {
             if (value == null) {
-                result.addFailure(
-                    new ValidationResult.Failure(
-                        new CommonValidationMetadata.NotNull(
-                            identifier,
-                            NOT_NULL_CODE
-                        ))
-                );
+                result.addFailure(new ValidationResult.Failure(
+                        CommonValidationMetadata.notNull(identifier)
+                ));
             }
         };
     }
@@ -39,114 +25,137 @@ public final class CommonValidationRules {
     public static <T> ValidationRule<T> mustBeNull() {
         return (value, result, identifier) -> {
             if (value != null) {
-                result.addFailure(
-                    new ValidationResult.Failure(new CommonValidationMetadata.MustBeNull(
-                        identifier,
-                        MUST_BE_NULL_CODE
-                    ))
-                );
+                result.addFailure(new ValidationResult.Failure(
+                        CommonValidationMetadata.mustBeNull(identifier)
+                ));
             }
         };
     }
 
-    public static <T> ValidationRule<T> isEqual(T object) {
+    public static <T> ValidationRule<T> isEqual(final T object) {
+        if (object == null) {
+            throw new IllegalArgumentException("Reference object cannot be null");
+        }
+
         return (value, result, identifier) -> {
-            if (value != null && !value.equals(object)) {
-                result.addFailure(
-                    new ValidationResult.Failure(new CommonValidationMetadata.Equal<>(
-                        identifier,
-                        IS_EQUAL_CODE,
-                        object.getClass()
-                    ))
-                );
+            if (value == null) {
+                // Skip validation for null value
+                return;
+            }
+
+            if (!value.equals(object)) {
+                result.addFailure(new ValidationResult.Failure(
+                        CommonValidationMetadata.equal(identifier, object)
+                ));
             }
         };
     }
 
-    public static <T> ValidationRule<T> isNotEqual(T object) {
+    public static <T> ValidationRule<T> isNotEqual(final T object) {
+        if (object == null) {
+            throw new IllegalArgumentException("Reference object cannot be null");
+        }
+
         return (value, result, identifier) -> {
-            if (value != null && value.equals(object)) {
-                result.addFailure(
-                    new ValidationResult.Failure(new CommonValidationMetadata.NotEqual<>(
-                        identifier,
-                        IS_NOT_EQUAL_CODE,
-                        object.getClass()
-                    ))
-                );
+            if (value == null) {
+                // Skip validation for null value
+                return;
+            }
+
+            if (value.equals(object)) {
+                result.addFailure(new ValidationResult.Failure(
+                        CommonValidationMetadata.notEqual(identifier, object)
+                ));
             }
         };
     }
 
-    public static <T> ValidationRule<T> satisfies(Predicate<T> predicate,
-        String message) {
+    public static <T> ValidationRule<T> satisfies(final Predicate<T> predicate, final String message) {
+        if (predicate == null) {
+            throw new IllegalArgumentException("Predicate cannot be null");
+        }
+
+        if (message == null || message.isBlank()) {
+            throw new IllegalArgumentException("Predicate description cannot be null or empty");
+        }
+
         return (value, result, identifier) -> {
-            if (value != null && !predicate.test(value)) {
-                result.addFailure(
-                    new ValidationResult.Failure(new CommonValidationMetadata.Satisfies<>(
-                        identifier,
-                        SATISFIES_CODE,
-                        predicate,
-                        message
-                    ))
-                );
+            if (value == null) {
+                // Skip validation for null value
+                return;
+            }
+
+            if (!predicate.test(value)) {
+                result.addFailure(new ValidationResult.Failure(
+                        CommonValidationMetadata.satisfies(identifier, predicate, message)
+                ));
             }
         };
     }
 
-    public static <T> ValidationRule<T> isInstanceOf(Class<?> clazz) {
+    public static <T> ValidationRule<T> isInstanceOf(final Class<?> clazz) {
+        if (clazz == null) {
+            throw new IllegalArgumentException("Class cannot be null");
+        }
+
         return (value, result, identifier) -> {
-            if (value != null && !clazz.isInstance(value)) {
-                result.addFailure(
-                    new ValidationResult.Failure(new CommonValidationMetadata.InstanceOf(
-                        identifier,
-                        IS_INSTANCE_OF_CODE,
-                        clazz
-                    ))
-                );
+            if (value == null) {
+                // Skip validation for null value
+                return;
+            }
+
+            if (!clazz.isInstance(value)) {
+                result.addFailure(new ValidationResult.Failure(
+                        CommonValidationMetadata.instanceOf(identifier, clazz)
+                ));
             }
         };
     }
 
-    public static <T> ValidationRule<T> isNotInstanceOf(Class<?> clazz) {
+    public static <T> ValidationRule<T> isNotInstanceOf(final Class<?> clazz) {
+        if (clazz == null) {
+            throw new IllegalArgumentException("Class cannot be null");
+        }
+
         return (value, result, identifier) -> {
-            if (value != null && clazz.isInstance(value)) {
-                result.addFailure(
-                    new ValidationResult.Failure(new CommonValidationMetadata.NotInstanceOf(
-                        identifier,
-                        IS_NOT_INSTANCE_OF_CODE,
-                        clazz
-                    ))
-                );
+            if (value == null) {
+                // Skip validation for null value
+                return;
+            }
+
+            if (clazz.isInstance(value)) {
+                result.addFailure(new ValidationResult.Failure(
+                        CommonValidationMetadata.notInstanceOf(identifier, clazz)
+                ));
             }
         };
     }
 
     public static <T> ValidationRule<T> isSameAs(T object) {
+        if (object == null) {
+            throw new IllegalArgumentException("Reference object cannot be null");
+        }
+
         return (value, result, identifier) -> {
             if (value != object) {
-                result.addFailure(
-                    new ValidationResult.Failure(new CommonValidationMetadata.SameAs(
-                        identifier,
-                        IS_SAME_AS_CODE,
-                        object.getClass()
-                    ))
-                );
+                result.addFailure(new ValidationResult.Failure(
+                        CommonValidationMetadata.sameAs(identifier, object)
+                ));
             }
         };
     }
 
     public static <T> ValidationRule<T> isNotSameAs(T object) {
+        if (object == null) {
+            throw new IllegalArgumentException("Reference object cannot be null");
+        }
+
         return (value, result, identifier) -> {
             if (value == object) {
-                result.addFailure(
-                    new ValidationResult.Failure(new CommonValidationMetadata.NotSameAs(
-                        identifier,
-                        IS_NOT_SAME_AS_CODE,
-                        object.getClass()
-                    ))
-                );
+                result.addFailure(new ValidationResult.Failure(
+                        CommonValidationMetadata.notSameAs(identifier, object)
+                ));
             }
         };
     }
-
 }
