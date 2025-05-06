@@ -38,11 +38,18 @@ public abstract class DateTimeValidationMetadata extends ValidationMetadata {
                 throw new IllegalArgumentException("Min must be less than or equal to max");
             }
 
-            // The formatting will be done by the message provider
-            addMessageParameter("minDate", String.valueOf(min));
-            addMessageParameter("maxDate", String.valueOf(max));
+            // Store raw date values
+            addMessageParameter(MessageParameter.MIN_DATE, String.valueOf(min));
+            addMessageParameter(MessageParameter.MAX_DATE, String.valueOf(max));
         }
 
+        /**
+         * Set the formatted representation of min and max dates
+         */
+        public void setFormattedDates(String minFormatted, String maxFormatted) {
+            addMessageParameter("minDateFormatted", minFormatted);
+            addMessageParameter("maxDateFormatted", maxFormatted);
+        }
     }
 
     @Getter
@@ -53,7 +60,15 @@ public abstract class DateTimeValidationMetadata extends ValidationMetadata {
             super(identifier, DefaultValidationCode.BEFORE, new HashMap<>());
             this.reference = Objects.requireNonNull(reference);
 
-            addMessageParameter("referenceDate", String.valueOf(reference));
+            // Store raw reference date
+            addMessageParameter(MessageParameter.REFERENCE_DATE, String.valueOf(reference));
+        }
+
+        /**
+         * Set the formatted representation of the reference date
+         */
+        public void setFormattedReference(String referenceFormatted) {
+            addMessageParameter("referenceDateFormatted", referenceFormatted);
         }
     }
 
@@ -65,8 +80,8 @@ public abstract class DateTimeValidationMetadata extends ValidationMetadata {
             super(identifier, DefaultValidationCode.AFTER, new HashMap<>());
             this.reference = Objects.requireNonNull(reference);
 
-            // Store the raw reference date
-            addMessageParameter("referenceDate", String.valueOf(reference));
+            // Store raw reference date
+            addMessageParameter(MessageParameter.REFERENCE_DATE, String.valueOf(reference));
         }
 
         /**
@@ -85,8 +100,8 @@ public abstract class DateTimeValidationMetadata extends ValidationMetadata {
             super(identifier, DefaultValidationCode.BEFORE_OR_EQUALS, new HashMap<>());
             this.reference = Objects.requireNonNull(reference);
 
-            // Store the raw reference date
-            addMessageParameter("referenceDate", String.valueOf(reference));
+            // Store raw reference date
+            addMessageParameter(MessageParameter.REFERENCE_DATE, String.valueOf(reference));
         }
 
         /**
@@ -105,8 +120,8 @@ public abstract class DateTimeValidationMetadata extends ValidationMetadata {
             super(identifier, DefaultValidationCode.AFTER_OR_EQUALS, new HashMap<>());
             this.reference = Objects.requireNonNull(reference);
 
-            // Store the raw reference date
-            addMessageParameter("referenceDate", String.valueOf(reference));
+            // Store raw reference date
+            addMessageParameter(MessageParameter.REFERENCE_DATE, String.valueOf(reference));
         }
 
         /**
@@ -161,8 +176,8 @@ public abstract class DateTimeValidationMetadata extends ValidationMetadata {
             super(identifier, DefaultValidationCode.EQUALS_DATE, new HashMap<>());
             this.reference = Objects.requireNonNull(reference);
 
-            // Store the raw reference date
-            addMessageParameter("referenceDate", String.valueOf(reference));
+            // Store raw reference date
+            addMessageParameter(MessageParameter.REFERENCE_DATE, String.valueOf(reference));
         }
 
         /**
@@ -181,7 +196,9 @@ public abstract class DateTimeValidationMetadata extends ValidationMetadata {
 
         public IsWeekday(ValidationIdentifier identifier) {
             super(identifier, DefaultValidationCode.IS_WEEKDAY, new HashMap<>());
-            // No additional parameters needed for this validation
+
+            // Add weekdays as a parameter for potential use in messages
+            addMessageParameter("weekdays", "Monday-Friday");
         }
 
         public Set<DayOfWeek> getWeekdays() {
@@ -196,7 +213,9 @@ public abstract class DateTimeValidationMetadata extends ValidationMetadata {
 
         public IsWeekend(ValidationIdentifier identifier) {
             super(identifier, DefaultValidationCode.IS_WEEKEND, new HashMap<>());
-            // No additional parameters needed for this validation
+
+            // Add weekend days as a parameter for potential use in messages
+            addMessageParameter("weekendDays", "Saturday-Sunday");
         }
 
         public Set<DayOfWeek> getWeekendDays() {
@@ -213,7 +232,7 @@ public abstract class DateTimeValidationMetadata extends ValidationMetadata {
             this.month = Objects.requireNonNull(month);
 
             // Add message parameters
-            addMessageParameter("month", month.toString());
+            addMessageParameter(MessageParameter.MONTH, month.toString());
         }
     }
 
@@ -227,106 +246,63 @@ public abstract class DateTimeValidationMetadata extends ValidationMetadata {
             this.year = year;
 
             // Add message parameters
-            addMessageParameter("year", String.valueOf(year));
+            addMessageParameter(MessageParameter.YEAR, String.valueOf(year));
         }
     }
 
-    // Factory methods for easier validation creation
-
-    /**
-     * Factory method for creating InRange validation
-     */
+    // Factory methods
     public static <T extends Temporal & Comparable<? super T>> InRange<T> inRange(ValidationIdentifier identifier, T min, T max) {
         return new InRange<>(identifier, min, max);
     }
 
-    /**
-     * Factory method for creating Before validation
-     */
     public static <T extends Temporal & Comparable<? super T>> Before<T> before(ValidationIdentifier identifier, T reference) {
         return new Before<>(identifier, reference);
     }
 
-    /**
-     * Factory method for creating After validation
-     */
     public static <T extends Temporal & Comparable<? super T>> After<T> after(ValidationIdentifier identifier, T reference) {
         return new After<>(identifier, reference);
     }
 
-    /**
-     * Factory method for creating BeforeOrEquals validation
-     */
     public static <T extends Temporal & Comparable<? super T>> BeforeOrEquals<T> beforeOrEquals(ValidationIdentifier identifier, T reference) {
         return new BeforeOrEquals<>(identifier, reference);
     }
 
-    /**
-     * Factory method for creating AfterOrEquals validation
-     */
     public static <T extends Temporal & Comparable<? super T>> AfterOrEquals<T> afterOrEquals(ValidationIdentifier identifier, T reference) {
         return new AfterOrEquals<>(identifier, reference);
     }
 
-    /**
-     * Factory method for creating Future validation
-     */
     public static Future future(ValidationIdentifier identifier) {
         return new Future(identifier);
     }
 
-    /**
-     * Factory method for creating Past validation
-     */
     public static Past past(ValidationIdentifier identifier) {
         return new Past(identifier);
     }
 
-    /**
-     * Factory method for creating PresentOrFuture validation
-     */
     public static PresentOrFuture presentOrFuture(ValidationIdentifier identifier) {
         return new PresentOrFuture(identifier);
     }
 
-    /**
-     * Factory method for creating PresentOrPast validation
-     */
     public static PresentOrPast presentOrPast(ValidationIdentifier identifier) {
         return new PresentOrPast(identifier);
     }
 
-    /**
-     * Factory method for creating Equals validation
-     */
     public static <T extends Temporal & Comparable<? super T>> Equals<T> equalsDate(ValidationIdentifier identifier, T reference) {
         return new Equals<>(identifier, reference);
     }
 
-    /**
-     * Factory method for creating IsWeekday validation
-     */
     public static IsWeekday isWeekday(ValidationIdentifier identifier) {
         return new IsWeekday(identifier);
     }
 
-    /**
-     * Factory method for creating IsWeekend validation
-     */
     public static IsWeekend isWeekend(ValidationIdentifier identifier) {
         return new IsWeekend(identifier);
     }
 
-    /**
-     * Factory method for creating InMonth validation
-     */
     public static InMonth inMonth(ValidationIdentifier identifier, Month month) {
         return new InMonth(identifier, month);
     }
 
-    /**
-     * Factory method for creating InYear validation
-     */
     public static InYear inYear(ValidationIdentifier identifier, int year) {
         return new InYear(identifier, year);
     }
