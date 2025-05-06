@@ -1,5 +1,7 @@
 package com.fluentval.validator.metadata;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 import com.fluentval.validator.ValidationIdentifier;
@@ -14,15 +16,15 @@ public abstract class ValidationMetadata {
     
     private final ValidationIdentifier identifier;
     private final String errorCode;
-    private final String message;
+    private final Map<String, String> messageParameters = new HashMap<>();
 
-    protected ValidationMetadata(ValidationIdentifier identifier, String errorCode, String message) {
+    protected ValidationMetadata(ValidationIdentifier identifier, String errorCode, Map<String, String> messageParameters) {
         this.identifier = Objects.requireNonNull(identifier, "Identifier cannot be null");
         this.errorCode = Objects.requireNonNull(errorCode, "ErrorCode cannot be null");
-        this.message = message;
     }
 
-    public static String formatMessage(String messageTemplate, Object... args) {
-        return String.format(messageTemplate, args);
+    protected void addMessageParameter(String key, String message) {
+        messageParameters.put(key, message);
     }
+
 }

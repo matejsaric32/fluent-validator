@@ -1,14 +1,15 @@
 package com.fluentval.validator;
 
+import com.fluentval.validator.message.ValidationMessageRegistry;
+import com.fluentval.validator.metadata.ValidationMetadata;
+import lombok.Getter;
+import lombok.ToString;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-
-import com.fluentval.validator.metadata.ValidationMetadata;
-import lombok.Getter;
-import lombok.ToString;
 
 public class ValidationResult {
     private final List<Failure> failures = new ArrayList<>();
@@ -17,8 +18,8 @@ public class ValidationResult {
     public void addFailure(final Failure failure) {
         failures.add(failure);
         failuresByIdentifier
-            .computeIfAbsent(failure.getValidationMetadata().getIdentifier(), k -> new ArrayList<>())
-            .add(failure);
+                .computeIfAbsent(failure.getValidationMetadata().getIdentifier(), k -> new ArrayList<>())
+                .add(failure);
     }
 
     public boolean hasErrors() {
@@ -27,7 +28,7 @@ public class ValidationResult {
 
     public boolean hasErrorForIdentifier(final ValidationIdentifier identifier) {
         return failuresByIdentifier.containsKey(identifier) &&
-               !failuresByIdentifier.get(identifier).isEmpty();
+                !failuresByIdentifier.get(identifier).isEmpty();
     }
 
     public List<Failure> getFailures() {
@@ -36,8 +37,8 @@ public class ValidationResult {
 
     public List<Failure> getErrorsForIdentifier(final ValidationIdentifier identifier) {
         return failuresByIdentifier.containsKey(identifier)
-            ? new ArrayList<>(failuresByIdentifier.get(identifier))
-            : List.of();
+                ? new ArrayList<>(failuresByIdentifier.get(identifier))
+                : List.of();
     }
 
     public Map<ValidationIdentifier, List<Failure>> getFailuresByIdentifier() {
@@ -52,8 +53,15 @@ public class ValidationResult {
 
     public String getErrorMessages() {
         return failures.stream()
-            .map(failure -> failure.getValidationMetadata().getIdentifier().value() + ": " + failure.getValidationMetadata().getMessage())
-            .collect(Collectors.joining(", "));
+                .map(failure -> {
+                    ValidationMetadata metadata = failure.getValidationMetadata();
+                    return ValidationMessageRegistry.getInstance().getMessage(
+                            metadata.getErrorCode(),
+                            metadata.getIdentifier(),
+                            metadata.getMessageParameters()
+                    );
+                })
+                .collect(Collectors.joining(", "));
     }
 
     @Override
@@ -64,7 +72,7 @@ public class ValidationResult {
         return "ValidationResult: " + getErrorMessages();
     }
 
-    public static ValidationResult success(final ValidationMetadata validationMetadata, final ValidationIdentifier identifier) {
+    public static ValidationResult success() {
         return new ValidationResult(); // Empty result means success
     }
 
