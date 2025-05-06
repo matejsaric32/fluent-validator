@@ -4,7 +4,6 @@ import com.fluentval.validator.ValidationIdentifier;
 import com.fluentval.validator.message.MessageParameter;
 import lombok.Getter;
 
-import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.temporal.Temporal;
 import java.util.HashMap;
@@ -33,8 +32,8 @@ public abstract class TimeValidationMetadata extends ValidationMetadata {
             this.max = Objects.requireNonNull(max, "Max value can't be null");
 
             // Store raw time values
-            addMessageParameter("minTime", String.valueOf(min));
-            addMessageParameter("maxTime", String.valueOf(max));
+            addMessageParameter(MessageParameter.MIN_TIME, String.valueOf(min));
+            addMessageParameter(MessageParameter.MAX_TIME, String.valueOf(max));
         }
 
     }
@@ -48,7 +47,7 @@ public abstract class TimeValidationMetadata extends ValidationMetadata {
             this.reference = Objects.requireNonNull(reference, "Reference can't be null");
 
             // Store raw reference time
-            addMessageParameter("referenceTime", String.valueOf(reference));
+            addMessageParameter(MessageParameter.REFERENCE_TIME, String.valueOf(reference));
         }
 
     }
@@ -62,7 +61,7 @@ public abstract class TimeValidationMetadata extends ValidationMetadata {
             this.reference = Objects.requireNonNull(reference, "Reference can't be null");
 
             // Store raw reference time
-            addMessageParameter("referenceTime", String.valueOf(reference));
+            addMessageParameter(MessageParameter.REFERENCE_TIME, String.valueOf(reference));
         }
 
     }
@@ -76,7 +75,7 @@ public abstract class TimeValidationMetadata extends ValidationMetadata {
             this.reference = Objects.requireNonNull(reference, "Reference can't be null");
 
             // Store raw reference time
-            addMessageParameter("referenceTime", String.valueOf(reference));
+            addMessageParameter(MessageParameter.REFERENCE_TIME, String.valueOf(reference));
         }
 
     }
@@ -90,7 +89,7 @@ public abstract class TimeValidationMetadata extends ValidationMetadata {
             this.reference = Objects.requireNonNull(reference, "Reference can't be null");
 
             // Store raw reference time
-            addMessageParameter("referenceTime", String.valueOf(reference));
+            addMessageParameter(MessageParameter.REFERENCE_TIME, String.valueOf(reference));
         }
 
     }
@@ -104,7 +103,7 @@ public abstract class TimeValidationMetadata extends ValidationMetadata {
             this.reference = Objects.requireNonNull(reference, "Reference can't be null");
 
             // Store raw reference time
-            addMessageParameter("referenceTime", String.valueOf(reference));
+            addMessageParameter(MessageParameter.REFERENCE_TIME, String.valueOf(reference));
         }
 
     }
@@ -114,7 +113,10 @@ public abstract class TimeValidationMetadata extends ValidationMetadata {
 
         public IsMorning(ValidationIdentifier identifier) {
             super(identifier, DefaultValidationCode.IS_MORNING, new HashMap<>());
-            // No additional parameters needed
+
+            // Add time period details for potential use in messages
+            addMessageParameter(MessageParameter.TIME_PERIOD, "morning");
+            addMessageParameter(MessageParameter.TIME_RANGE, "00:00-11:59");
         }
     }
 
@@ -123,7 +125,10 @@ public abstract class TimeValidationMetadata extends ValidationMetadata {
 
         public IsAfternoon(ValidationIdentifier identifier) {
             super(identifier, DefaultValidationCode.IS_AFTERNOON, new HashMap<>());
-            // No additional parameters needed
+
+            // Add time period details for potential use in messages
+            addMessageParameter(MessageParameter.TIME_PERIOD, "afternoon");
+            addMessageParameter(MessageParameter.TIME_RANGE, "12:00-17:59");
         }
     }
 
@@ -132,7 +137,10 @@ public abstract class TimeValidationMetadata extends ValidationMetadata {
 
         public IsEvening(ValidationIdentifier identifier) {
             super(identifier, DefaultValidationCode.IS_EVENING, new HashMap<>());
-            // No additional parameters needed
+
+            // Add time period details for potential use in messages
+            addMessageParameter(MessageParameter.TIME_PERIOD, "evening");
+            addMessageParameter(MessageParameter.TIME_RANGE, "18:00-23:59");
         }
     }
 
@@ -141,7 +149,10 @@ public abstract class TimeValidationMetadata extends ValidationMetadata {
 
         public IsBusinessHours(ValidationIdentifier identifier) {
             super(identifier, DefaultValidationCode.IS_BUSINESS_HOURS, new HashMap<>());
-            // No additional parameters needed
+
+            // Add business hours details for potential use in messages
+            addMessageParameter(MessageParameter.TIME_PERIOD, "business hours");
+            addMessageParameter(MessageParameter.TIME_RANGE, "08:00-16:00");
         }
     }
 
@@ -150,7 +161,10 @@ public abstract class TimeValidationMetadata extends ValidationMetadata {
 
         public IsLunchHour(ValidationIdentifier identifier) {
             super(identifier, DefaultValidationCode.IS_LUNCH_HOUR, new HashMap<>());
-            // No additional parameters needed
+
+            // Add lunch hour details for potential use in messages
+            addMessageParameter(MessageParameter.TIME_PERIOD, "lunch hour");
+            addMessageParameter(MessageParameter.TIME_RANGE, "12:00-13:00");
         }
     }
 

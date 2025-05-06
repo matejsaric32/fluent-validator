@@ -38,16 +38,24 @@ public enum MessageParameter {
     // Object validation parameters
     CLASS_NAME("className"),        // Class name for instance checks
     REFERENCE("reference"),         // Reference object for identity checks
-    
+
     // Time validation parameters
-    TIME_ZONE("timeZone"),          // Required time zone
+    MIN_TIME("minTime"),            // Minimum allowed time
+    MAX_TIME("maxTime"),            // Maximum allowed time
+    REFERENCE_TIME("referenceTime"), // Reference time for comparisons
     MIN_HOUR("minHour"),            // Minimum hour value
     MAX_HOUR("maxHour"),            // Maximum hour value
     MIN_MINUTE("minMinute"),        // Minimum minute value
     MAX_MINUTE("maxMinute"),        // Maximum minute value
     MIN_SECOND("minSecond"),        // Minimum second value
     MAX_SECOND("maxSecond"),        // Maximum second value
-    
+    TIME_ZONE("timeZone"),          // Required time zone
+    TIME_PERIOD("timePeriod"),      // Time period (morning, afternoon, etc.)
+    TIME_RANGE("timeRange"),        // Time range (e.g., "08:00-16:00")
+    FORMATTED_MIN_TIME("minTimeFormatted"), // Formatted minimum time
+    FORMATTED_MAX_TIME("maxTimeFormatted"), // Formatted maximum time
+    FORMATTED_REFERENCE_TIME("referenceTimeFormatted"), // Formatted reference time
+
     // Custom business validation parameters
     ENTITY_TYPE("entityType"),      // Type of entity being validated
     ERROR_DETAILS("errorDetails");  // Additional details about the error
