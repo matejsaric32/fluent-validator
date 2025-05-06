@@ -1,116 +1,106 @@
 package com.fluentval.validator.metadata;
 
 import com.fluentval.validator.ValidationIdentifier;
+import com.fluentval.validator.message.MessageParameter;
 import lombok.Getter;
 
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 import java.util.regex.Pattern;
 
 public abstract class StringValidationMetadata extends ValidationMetadata {
 
-    // Error code constants
-    public static final String NOT_BLANK_CODE = "VGS01";
-    public static final String MAX_LENGTH_CODE = "VGS02";
-    public static final String MIN_LENGTH_CODE = "VGS03";
-    public static final String EXACT_LENGTH_CODE = "VGS04";
-    public static final String MATCHES_CODE = "VGS05";
-    public static final String ONE_OF_CODE = "VGS06";
-    public static final String ONE_OF_IGNORE_CASE_CODE = "VGS07";
-    public static final String STARTS_WITH_CODE = "VGS08";
-    public static final String ENDS_WITH_CODE = "VGS09";
-    public static final String CONTAINS_CODE = "VGS10";
-    public static final String NUMERIC_CODE = "VGS11";
-    public static final String ALPHANUMERIC_CODE = "VGS12";
-    public static final String UPPERCASE_CODE = "VGS13";
-    public static final String LOWERCASE_CODE = "VGS14";
-    public static final String NO_WHITESPACE_CODE = "VGS15";
-    public static final String NO_LEADING_WHITESPACE_CODE = "VGS16";
-    public static final String NO_TRAILING_WHITESPACE_CODE = "VGS17";
-    public static final String NO_CONSECUTIVE_WHITESPACE_CODE = "VGS18";
-    public static final String TRIMMED_CODE = "VGS19";
-    public static final String PROPER_SPACING_CODE = "VGS20";
+    protected StringValidationMetadata(ValidationIdentifier identifier,
+                                       DefaultValidationCode code,
+                                       Map<String, String> messageParameters) {
+        super(identifier, code.getCode(), messageParameters);
 
-    // Message templates
-    private static final String NOT_BLANK_MESSAGE = "Field '%s' must not be blank.";
-    private static final String MAX_LENGTH_MESSAGE = "Field '%s' must not exceed %s characters.";
-    private static final String MIN_LENGTH_MESSAGE = "Field '%s' must be at least %s characters long.";
-    private static final String EXACT_LENGTH_MESSAGE = "Field '%s' must be exactly %s characters long.";
-    private static final String MATCHES_MESSAGE = "Field '%s' must match the pattern: %s.";
-    private static final String ONE_OF_MESSAGE = "Field '%s' must be one of the following values: %s.";
-    private static final String ONE_OF_IGNORE_CASE_MESSAGE = 
-        "Field '%s' must be one of the following values (case-insensitive): %s.";
-    private static final String STARTS_WITH_MESSAGE = "Field '%s' must start with '%s'.";
-    private static final String ENDS_WITH_MESSAGE = "Field '%s' must end with '%s'.";
-    private static final String CONTAINS_MESSAGE = "Field '%s' must contain '%s'.";
-    private static final String NUMERIC_MESSAGE = "Field '%s' must contain only digits.";
-    private static final String ALPHANUMERIC_MESSAGE = "Field '%s' must contain only letters and digits.";
-    private static final String UPPERCASE_MESSAGE = "Field '%s' must be all uppercase.";
-    private static final String LOWERCASE_MESSAGE = "Field '%s' must be all lowercase.";
-    private static final String NO_WHITESPACE_MESSAGE = "Field '%s' must not contain whitespace.";
-    private static final String NO_LEADING_WHITESPACE_MESSAGE = "Field '%s' must not start with whitespace.";
-    private static final String NO_TRAILING_WHITESPACE_MESSAGE = "Field '%s' must not end with whitespace.";
-    private static final String NO_CONSECUTIVE_WHITESPACE_MESSAGE = "Field '%s' must not contain consecutive spaces.";
-    private static final String TRIMMED_MESSAGE = "Field '%s' must not have leading or trailing whitespace.";
-    private static final String PROPER_SPACING_MESSAGE = "Field '%s' must use a single space between words.";
+        // Always add the field identifier as a parameter
+        addMessageParameter(MessageParameter.FIELD, identifier.value());
+    }
 
-    protected StringValidationMetadata(ValidationIdentifier identifier, String errorCode, String message) {
-        super(identifier, errorCode, message);
+    protected void addMessageParameter(MessageParameter param, String value) {
+        addMessageParameter(param.getKey(), value);
     }
 
     public static final class NotBlank extends StringValidationMetadata {
+
         public NotBlank(ValidationIdentifier identifier) {
-            super(identifier, NOT_BLANK_CODE, formatMessage(NOT_BLANK_MESSAGE, identifier.value()));
+            super(identifier, DefaultValidationCode.NOT_BLANK, new HashMap<>());
+            // Field parameter already added in parent constructor
         }
     }
 
     @Getter
     public static final class MaxLength extends StringValidationMetadata {
         private final int maxLength;
+
         public MaxLength(ValidationIdentifier identifier, int maxLength) {
-            super(identifier, MAX_LENGTH_CODE, formatMessage(MAX_LENGTH_MESSAGE, identifier.value(), String.valueOf(maxLength)));
+            super(identifier, DefaultValidationCode.MAX_LENGTH, new HashMap<>());
             if (maxLength < 0) throw new IllegalArgumentException("Maximum length cannot be negative");
             this.maxLength = maxLength;
+
+            // Add message parameters
+            addMessageParameter(MessageParameter.MAX_LENGTH, String.valueOf(maxLength));
         }
     }
 
     @Getter
     public static final class MinLength extends StringValidationMetadata {
         private final int minLength;
+
         public MinLength(ValidationIdentifier identifier, int minLength) {
-            super(identifier, MIN_LENGTH_CODE, formatMessage(MIN_LENGTH_MESSAGE, identifier.value(), String.valueOf(minLength)));
+            super(identifier, DefaultValidationCode.MIN_LENGTH, new HashMap<>());
             if (minLength < 0) throw new IllegalArgumentException("Minimum length cannot be negative");
             this.minLength = minLength;
+
+            // Add message parameters
+            addMessageParameter(MessageParameter.MIN_LENGTH, String.valueOf(minLength));
         }
     }
 
     @Getter
     public static final class ExactLength extends StringValidationMetadata {
         private final int exactLength;
+
         public ExactLength(ValidationIdentifier identifier, int exactLength) {
-            super(identifier, EXACT_LENGTH_CODE, formatMessage(EXACT_LENGTH_MESSAGE, identifier.value(), String.valueOf(exactLength)));
+            super(identifier, DefaultValidationCode.EXACT_LENGTH, new HashMap<>());
             if (exactLength < 0) throw new IllegalArgumentException("Exact length cannot be negative");
             this.exactLength = exactLength;
+
+            // Add message parameters
+            addMessageParameter(MessageParameter.EXACT_LENGTH, String.valueOf(exactLength));
         }
     }
 
     @Getter
     public static final class Matches extends StringValidationMetadata {
         private final Pattern pattern;
+
         public Matches(ValidationIdentifier identifier, Pattern pattern) {
-            super(identifier, MATCHES_CODE, formatMessage(MATCHES_MESSAGE, identifier.value(), pattern.pattern()));
+            super(identifier, DefaultValidationCode.MATCHES, new HashMap<>());
             this.pattern = Objects.requireNonNull(pattern, "Pattern must not be null");
+
+            // Add message parameters
+            addMessageParameter(MessageParameter.PATTERN, pattern.pattern());
         }
     }
 
     @Getter
     public static final class OneOf extends StringValidationMetadata {
         private final String[] allowedValues;
+
         public OneOf(ValidationIdentifier identifier, String[] allowedValues) {
-            super(identifier, ONE_OF_CODE, formatMessage(ONE_OF_MESSAGE, identifier.value(), String.join(", ", allowedValues)));
+            super(identifier, DefaultValidationCode.ONE_OF, new HashMap<>());
             this.allowedValues = Objects.requireNonNull(allowedValues, "Allowed values must not be null");
             if (allowedValues.length == 0) throw new IllegalArgumentException("At least one allowed value is required");
+
+            // Add message parameters
+            addMessageParameter(MessageParameter.ALLOWED_VALUES, String.join(", ", allowedValues));
         }
+
         public String[] getAllowedValues() {
             return allowedValues.clone();
         }
@@ -119,11 +109,16 @@ public abstract class StringValidationMetadata extends ValidationMetadata {
     @Getter
     public static final class OneOfIgnoreCase extends StringValidationMetadata {
         private final String[] allowedValues;
+
         public OneOfIgnoreCase(ValidationIdentifier identifier, String[] allowedValues) {
-            super(identifier, ONE_OF_IGNORE_CASE_CODE, formatMessage(ONE_OF_IGNORE_CASE_MESSAGE, identifier.value(), String.join(", ", allowedValues)));
+            super(identifier, DefaultValidationCode.ONE_OF_IGNORE_CASE, new HashMap<>());
             this.allowedValues = Objects.requireNonNull(allowedValues, "Allowed values must not be null");
             if (allowedValues.length == 0) throw new IllegalArgumentException("At least one allowed value is required");
+
+            // Add message parameters
+            addMessageParameter(MessageParameter.ALLOWED_VALUES, String.join(", ", allowedValues));
         }
+
         public String[] getAllowedValues() {
             return allowedValues.clone();
         }
@@ -132,97 +127,214 @@ public abstract class StringValidationMetadata extends ValidationMetadata {
     @Getter
     public static final class StartsWith extends StringValidationMetadata {
         private final String prefix;
+
         public StartsWith(ValidationIdentifier identifier, String prefix) {
-            super(identifier, STARTS_WITH_CODE, formatMessage(STARTS_WITH_MESSAGE, identifier.value(), prefix));
+            super(identifier, DefaultValidationCode.STARTS_WITH, new HashMap<>());
             this.prefix = Objects.requireNonNull(prefix, "Prefix must not be null");
+
+            // Add message parameters
+            addMessageParameter(MessageParameter.PREFIX, prefix);
         }
     }
 
     @Getter
     public static final class EndsWith extends StringValidationMetadata {
         private final String suffix;
+
         public EndsWith(ValidationIdentifier identifier, String suffix) {
-            super(identifier, ENDS_WITH_CODE, formatMessage(ENDS_WITH_MESSAGE, identifier.value(), suffix));
+            super(identifier, DefaultValidationCode.ENDS_WITH, new HashMap<>());
             this.suffix = Objects.requireNonNull(suffix, "Suffix must not be null");
+
+            // Add message parameters
+            addMessageParameter(MessageParameter.SUFFIX, suffix);
         }
     }
 
     @Getter
     public static final class Contains extends StringValidationMetadata {
         private final String substring;
+
         public Contains(ValidationIdentifier identifier, String substring) {
-            super(identifier, CONTAINS_CODE, formatMessage(CONTAINS_MESSAGE, identifier.value(), substring));
+            super(identifier, DefaultValidationCode.CONTAINS, new HashMap<>());
             this.substring = Objects.requireNonNull(substring, "Substring must not be null");
+
+            // Add message parameters
+            addMessageParameter(MessageParameter.SUBSTRING, substring);
         }
     }
 
     @Getter
     public static final class Numeric extends StringValidationMetadata {
+
         public Numeric(ValidationIdentifier identifier) {
-            super(identifier, NUMERIC_CODE, formatMessage(NUMERIC_MESSAGE, identifier.value()));
+            super(identifier, DefaultValidationCode.NUMERIC, new HashMap<>());
+            // Field parameter already added in parent constructor
         }
     }
 
     @Getter
     public static final class Alphanumeric extends StringValidationMetadata {
+
         public Alphanumeric(ValidationIdentifier identifier) {
-            super(identifier, ALPHANUMERIC_CODE, formatMessage(ALPHANUMERIC_MESSAGE, identifier.value()));
+            super(identifier, DefaultValidationCode.ALPHANUMERIC, new HashMap<>());
+            // Field parameter already added in parent constructor
         }
     }
 
     @Getter
     public static final class Uppercase extends StringValidationMetadata {
+
         public Uppercase(ValidationIdentifier identifier) {
-            super(identifier, UPPERCASE_CODE, formatMessage(UPPERCASE_MESSAGE, identifier.value()));
+            super(identifier, DefaultValidationCode.UPPERCASE, new HashMap<>());
+            // Field parameter already added in parent constructor
         }
     }
 
     @Getter
     public static final class Lowercase extends StringValidationMetadata {
+
         public Lowercase(ValidationIdentifier identifier) {
-            super(identifier, LOWERCASE_CODE, formatMessage(LOWERCASE_MESSAGE, identifier.value()));
+            super(identifier, DefaultValidationCode.LOWERCASE, new HashMap<>());
+            // Field parameter already added in parent constructor
         }
     }
 
     @Getter
     public static final class NoWhitespace extends StringValidationMetadata {
+
         public NoWhitespace(ValidationIdentifier identifier) {
-            super(identifier, NO_WHITESPACE_CODE, formatMessage(NO_WHITESPACE_MESSAGE, identifier.value()));
+            super(identifier, DefaultValidationCode.NO_WHITESPACE, new HashMap<>());
+            // Field parameter already added in parent constructor
         }
     }
 
     @Getter
     public static final class NoLeadingWhitespace extends StringValidationMetadata {
+
         public NoLeadingWhitespace(ValidationIdentifier identifier) {
-            super(identifier, NO_LEADING_WHITESPACE_CODE, formatMessage(NO_LEADING_WHITESPACE_MESSAGE, identifier.value()));
+            super(identifier, DefaultValidationCode.NO_LEADING_WHITESPACE, new HashMap<>());
+            // Field parameter already added in parent constructor
         }
     }
 
     @Getter
     public static final class NoTrailingWhitespace extends StringValidationMetadata {
+
         public NoTrailingWhitespace(ValidationIdentifier identifier) {
-            super(identifier, NO_TRAILING_WHITESPACE_CODE, formatMessage(NO_TRAILING_WHITESPACE_MESSAGE, identifier.value()));
+            super(identifier, DefaultValidationCode.NO_TRAILING_WHITESPACE, new HashMap<>());
+            // Field parameter already added in parent constructor
         }
     }
 
     @Getter
     public static final class NoConsecutiveWhitespace extends StringValidationMetadata {
+
         public NoConsecutiveWhitespace(ValidationIdentifier identifier) {
-            super(identifier, NO_CONSECUTIVE_WHITESPACE_CODE, formatMessage(NO_CONSECUTIVE_WHITESPACE_MESSAGE, identifier.value()));
+            super(identifier, DefaultValidationCode.NO_CONSECUTIVE_WHITESPACE, new HashMap<>());
+            // Field parameter already added in parent constructor
         }
     }
 
     @Getter
     public static final class Trimmed extends StringValidationMetadata {
+
         public Trimmed(ValidationIdentifier identifier) {
-            super(identifier, TRIMMED_CODE, formatMessage(TRIMMED_MESSAGE, identifier.value()));
+            super(identifier, DefaultValidationCode.TRIMMED, new HashMap<>());
+            // Field parameter already added in parent constructor
         }
     }
 
     @Getter
     public static final class ProperSpacing extends StringValidationMetadata {
+
         public ProperSpacing(ValidationIdentifier identifier) {
-            super(identifier, PROPER_SPACING_CODE, formatMessage(PROPER_SPACING_MESSAGE, identifier.value()));
+            super(identifier, DefaultValidationCode.PROPER_SPACING, new HashMap<>());
+            // Field parameter already added in parent constructor
         }
+    }
+
+    // Factory methods
+    public static NotBlank notBlank(ValidationIdentifier identifier) {
+        return new NotBlank(identifier);
+    }
+
+    public static MaxLength maxLength(ValidationIdentifier identifier, int maxLength) {
+        return new MaxLength(identifier, maxLength);
+    }
+
+    public static MinLength minLength(ValidationIdentifier identifier, int minLength) {
+        return new MinLength(identifier, minLength);
+    }
+
+    public static ExactLength exactLength(ValidationIdentifier identifier, int exactLength) {
+        return new ExactLength(identifier, exactLength);
+    }
+
+    public static Matches matches(ValidationIdentifier identifier, Pattern pattern) {
+        return new Matches(identifier, pattern);
+    }
+
+    public static Matches matches(ValidationIdentifier identifier, String pattern) {
+        return matches(identifier, Pattern.compile(pattern));
+    }
+
+    public static OneOf oneOf(ValidationIdentifier identifier, String... allowedValues) {
+        return new OneOf(identifier, allowedValues);
+    }
+
+    public static OneOfIgnoreCase oneOfIgnoreCase(ValidationIdentifier identifier, String... allowedValues) {
+        return new OneOfIgnoreCase(identifier, allowedValues);
+    }
+
+    public static StartsWith startsWith(ValidationIdentifier identifier, String prefix) {
+        return new StartsWith(identifier, prefix);
+    }
+
+    public static EndsWith endsWith(ValidationIdentifier identifier, String suffix) {
+        return new EndsWith(identifier, suffix);
+    }
+
+    public static Contains contains(ValidationIdentifier identifier, String substring) {
+        return new Contains(identifier, substring);
+    }
+
+    public static Numeric numeric(ValidationIdentifier identifier) {
+        return new Numeric(identifier);
+    }
+
+    public static Alphanumeric alphanumeric(ValidationIdentifier identifier) {
+        return new Alphanumeric(identifier);
+    }
+
+    public static Uppercase uppercase(ValidationIdentifier identifier) {
+        return new Uppercase(identifier);
+    }
+
+    public static Lowercase lowercase(ValidationIdentifier identifier) {
+        return new Lowercase(identifier);
+    }
+
+    public static NoWhitespace noWhitespace(ValidationIdentifier identifier) {
+        return new NoWhitespace(identifier);
+    }
+
+    public static NoLeadingWhitespace noLeadingWhitespace(ValidationIdentifier identifier) {
+        return new NoLeadingWhitespace(identifier);
+    }
+
+    public static NoTrailingWhitespace noTrailingWhitespace(ValidationIdentifier identifier) {
+        return new NoTrailingWhitespace(identifier);
+    }
+
+    public static NoConsecutiveWhitespace noConsecutiveWhitespace(ValidationIdentifier identifier) {
+        return new NoConsecutiveWhitespace(identifier);
+    }
+
+    public static Trimmed trimmed(ValidationIdentifier identifier) {
+        return new Trimmed(identifier);
+    }
+
+    public static ProperSpacing properSpacing(ValidationIdentifier identifier) {
+        return new ProperSpacing(identifier);
     }
 }
