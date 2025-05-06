@@ -1,31 +1,26 @@
 package com.fluentval.validator.metadata;
 
 import com.fluentval.validator.ValidationIdentifier;
+import com.fluentval.validator.message.MessageParameter;
 import lombok.Getter;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
-
 
 public abstract class NumberValidationMetadata extends ValidationMetadata {
 
-    // Error code constants
-    public static final String MIN_CODE = "VGN01";
-    public static final String MAX_CODE = "VGN02";
-    public static final String RANGE_CODE = "VGN03";
-    public static final String POSITIVE_CODE = "VGN04";
-    public static final String NEGATIVE_CODE = "VGN05";
-    public static final String NOT_ZERO_CODE = "VGN06";
+    protected NumberValidationMetadata(ValidationIdentifier identifier,
+                                       DefaultValidationCode code,
+                                       Map<String, String> messageParameters) {
+        super(identifier, code.getCode(), messageParameters);
 
-    // Message templates
-    private static final String MIN_MESSAGE = "Field '%s' must have a minimum value of %s.";
-    private static final String MAX_MESSAGE = "Field '%s' must have a maximum value of %s.";
-    private static final String RANGE_MESSAGE = "Field '%s' must be between %s and %s.";
-    private static final String POSITIVE_MESSAGE = "Field '%s' must be a positive number.";
-    private static final String NEGATIVE_MESSAGE = "Field '%s' must be a negative number.";
-    private static final String NOT_ZERO_MESSAGE = "Field '%s' must not be zero.";
+        // Always add the field identifier as a parameter
+        addMessageParameter(MessageParameter.FIELD, identifier.value());
+    }
 
-    protected NumberValidationMetadata(ValidationIdentifier identifier, String errorCode, String message) {
-        super(identifier, errorCode, message);
+    protected void addMessageParameter(MessageParameter param, String value) {
+        addMessageParameter(param.getKey(), value);
     }
 
     @Getter
@@ -33,10 +28,12 @@ public abstract class NumberValidationMetadata extends ValidationMetadata {
         private final T min;
 
         public Min(ValidationIdentifier identifier, T min) {
-            super(identifier, MIN_CODE, formatMessage(MIN_MESSAGE, identifier.value(), min.toString()));
+            super(identifier, DefaultValidationCode.MIN, new HashMap<>());
             this.min = Objects.requireNonNull(min, "Minimum value must not be null");
-        }
 
+            // Add message parameters
+            addMessageParameter(MessageParameter.MIN, min.toString());
+        }
     }
 
     @Getter
@@ -44,10 +41,12 @@ public abstract class NumberValidationMetadata extends ValidationMetadata {
         private final T max;
 
         public Max(ValidationIdentifier identifier, T max) {
-            super(identifier, MAX_CODE, formatMessage(MAX_MESSAGE, identifier.value(), max.toString()));
+            super(identifier, DefaultValidationCode.MAX, new HashMap<>());
             this.max = Objects.requireNonNull(max, "Maximum value must not be null");
-        }
 
+            // Add message parameters
+            addMessageParameter(MessageParameter.MAX, max.toString());
+        }
     }
 
     @Getter
@@ -56,32 +55,66 @@ public abstract class NumberValidationMetadata extends ValidationMetadata {
         private final T max;
 
         public Range(ValidationIdentifier identifier, T min, T max) {
-            super(identifier, RANGE_CODE, formatMessage(RANGE_MESSAGE, identifier.value(), min.toString(), max.toString()));
+            super(identifier, DefaultValidationCode.RANGE, new HashMap<>());
             this.min = Objects.requireNonNull(min, "Minimum value must not be null");
             this.max = Objects.requireNonNull(max, "Maximum value must not be null");
 
             if (min.compareTo(max) > 0) {
                 throw new IllegalArgumentException("Minimum value must be less than or equal to maximum value");
             }
-        }
 
+            // Add message parameters
+            addMessageParameter(MessageParameter.MIN, min.toString());
+            addMessageParameter(MessageParameter.MAX, max.toString());
+        }
     }
 
     public static final class Positive extends NumberValidationMetadata {
+
         public Positive(ValidationIdentifier identifier) {
-            super(identifier, POSITIVE_CODE, formatMessage(POSITIVE_MESSAGE, identifier.value()));
+            super(identifier, DefaultValidationCode.POSITIVE, new HashMap<>());
+            // No additional parameters needed for this validation
         }
     }
 
     public static final class Negative extends NumberValidationMetadata {
+
         public Negative(ValidationIdentifier identifier) {
-            super(identifier, NEGATIVE_CODE, formatMessage(NEGATIVE_MESSAGE, identifier.value()));
+            super(identifier, DefaultValidationCode.NEGATIVE, new HashMap<>());
+            // No additional parameters needed for this validation
         }
     }
 
     public static final class NotZero extends NumberValidationMetadata {
+
         public NotZero(ValidationIdentifier identifier) {
-            super(identifier, NOT_ZERO_CODE, formatMessage(NOT_ZERO_MESSAGE, identifier.value()));
+            super(identifier, DefaultValidationCode.NOT_ZERO, new HashMap<>());
+            // No additional parameters needed for this validation
         }
+    }
+
+    // Factory methods
+    public static <T extends Number & Comparable<T>> Min<T> min(ValidationIdentifier identifier, T min) {
+        return new Min<>(identifier, min);
+    }
+
+    public static <T extends Number & Comparable<T>> Max<T> max(ValidationIdentifier identifier, T max) {
+        return new Max<>(identifier, max);
+    }
+
+    public static <T extends Number & Comparable<T>> Range<T> range(ValidationIdentifier identifier, T min, T max) {
+        return new Range<>(identifier, min, max);
+    }
+
+    public static Positive positive(ValidationIdentifier identifier) {
+        return new Positive(identifier);
+    }
+
+    public static Negative negative(ValidationIdentifier identifier) {
+        return new Negative(identifier);
+    }
+
+    public static NotZero notZero(ValidationIdentifier identifier) {
+        return new NotZero(identifier);
     }
 }
