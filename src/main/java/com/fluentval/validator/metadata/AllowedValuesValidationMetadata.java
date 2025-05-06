@@ -114,7 +114,7 @@ public abstract class AllowedValuesValidationMetadata extends ValidationMetadata
             // Add message parameters
             String valuesString = createEnumValuesString(enumClass);
             addMessageParameter(MessageParameter.ALLOWED_VALUES, valuesString);
-            addMessageParameter("enumName", enumClass.getSimpleName());
+            addMessageParameter(MessageParameter.CLASS_NAME, enumClass.getSimpleName());
         }
 
         public Set<E> getEnumValues() {
@@ -132,29 +132,6 @@ public abstract class AllowedValuesValidationMetadata extends ValidationMetadata
             } else {
                 return "one of " + values.size() + " possible values";
             }
-        }
-    }
-
-    @Getter
-    public static final class InRange<T extends Comparable<T>> extends AllowedValuesValidationMetadata {
-        private final T minValue;
-        private final T maxValue;
-        private final String rangeDescription;
-
-        public InRange(ValidationIdentifier identifier, T minValue, T maxValue) {
-            super(identifier, DefaultValidationCode.IN_RANGE, new HashMap<>());
-            this.minValue = Objects.requireNonNull(minValue, "Min value must not be null");
-            this.maxValue = Objects.requireNonNull(maxValue, "Max value must not be null");
-            this.rangeDescription = minValue + " - " + maxValue;
-
-            if (minValue.compareTo(maxValue) > 0) {
-                throw new IllegalArgumentException("Min value must be less than or equal to max value");
-            }
-
-            // Add message parameters
-            addMessageParameter(MessageParameter.MIN, minValue.toString());
-            addMessageParameter(MessageParameter.MAX, maxValue.toString());
-            addMessageParameter("range", rangeDescription);
         }
     }
 
@@ -181,7 +158,4 @@ public abstract class AllowedValuesValidationMetadata extends ValidationMetadata
         return new IsInEnum<>(identifier, enumClass);
     }
 
-    public static <T extends Comparable<T>> InRange<T> inRange(ValidationIdentifier identifier, T minValue, T maxValue) {
-        return new InRange<>(identifier, minValue, maxValue);
-    }
 }

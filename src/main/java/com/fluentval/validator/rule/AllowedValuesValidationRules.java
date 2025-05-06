@@ -28,7 +28,7 @@ public final class AllowedValuesValidationRules {
 
             if (!allowedValues.contains(value)) {
                 result.addFailure(new ValidationResult.Failure(
-                    new AllowedValuesValidationMetadata.Contains<>(
+                    AllowedValuesValidationMetadata.contains(
                         identifier,
                         allowedValues,
                         allowedValuesString
@@ -56,7 +56,7 @@ public final class AllowedValuesValidationRules {
 
             if (!isValid) {
                 result.addFailure(new ValidationResult.Failure(
-                    new AllowedValuesValidationMetadata.OneOf<>(
+                    AllowedValuesValidationMetadata.oneOf(
                         identifier,
                         allowedValuesString,
                         allowedValues
@@ -80,7 +80,7 @@ public final class AllowedValuesValidationRules {
 
             if (disallowedValues.contains(value)) {
                 result.addFailure(new ValidationResult.Failure(
-                    new AllowedValuesValidationMetadata.NotContains<>(
+                    AllowedValuesValidationMetadata.notContains(
                         identifier,
                         disallowedValues,
                         disallowedValuesString
@@ -108,7 +108,7 @@ public final class AllowedValuesValidationRules {
 
             if (isInvalid) {
                 result.addFailure(new ValidationResult.Failure(
-                    new AllowedValuesValidationMetadata.NoneOf<>(
+                    AllowedValuesValidationMetadata.noneOf(
                         identifier,
                         disallowedValuesString,
                         disallowedValues
@@ -143,28 +143,9 @@ public final class AllowedValuesValidationRules {
 
             if (!isValid) {
                 result.addFailure(new ValidationResult.Failure(
-                    new AllowedValuesValidationMetadata.IsInEnum<>(
+                    AllowedValuesValidationMetadata.isInEnum(
                         identifier,
                         enumClass
-                    )
-                ));
-            }
-        };
-    }
-
-    public static <T extends Comparable<T>> ValidationRule<T> inRange(T minValue, T maxValue) {
-        return (value, result, identifier) -> {
-            if (value == null) {
-                // Skip validation for null value
-                return;
-            }
-
-            if (value.compareTo(minValue) < 0 || value.compareTo(maxValue) > 0) {
-                result.addFailure(new ValidationResult.Failure(
-                    new AllowedValuesValidationMetadata.InRange<>(
-                        identifier,
-                        minValue,
-                        maxValue
                     )
                 ));
             }
