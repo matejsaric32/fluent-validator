@@ -17,7 +17,7 @@ public final class CollectionValidationRules {
         return (value, result, identifier) -> {
             if (value != null && value.isEmpty()) {
                 result.addFailure(new ValidationResult.Failure(
-                    new CollectionValidationMetadata.NotEmpty(identifier)
+                    CollectionValidationMetadata.notEmpty(identifier)
                 ));
             }
         };
@@ -27,7 +27,7 @@ public final class CollectionValidationRules {
         return (value, result, identifier) -> {
             if (value != null && !value.isEmpty()) {
                 result.addFailure(new ValidationResult.Failure(
-                    new CollectionValidationMetadata.IsEmpty(identifier)
+                    CollectionValidationMetadata.isEmpty(identifier)
                 ));
             }
         };
@@ -37,7 +37,7 @@ public final class CollectionValidationRules {
         return (value, result, identifier) -> {
             if (value != null && value.size() < min) {
                 result.addFailure(new ValidationResult.Failure(
-                    new CollectionValidationMetadata.MinSize(identifier, min)
+                    CollectionValidationMetadata.minSize(identifier, min)
                 ));
             }
         };
@@ -47,7 +47,7 @@ public final class CollectionValidationRules {
         return (value, result, identifier) -> {
             if (value != null && value.size() > max) {
                 result.addFailure(new ValidationResult.Failure(
-                    new CollectionValidationMetadata.MaxSize(identifier, max)
+                    CollectionValidationMetadata.maxSize(identifier, max)
                 ));
             }
         };
@@ -57,7 +57,7 @@ public final class CollectionValidationRules {
         return (value, result, identifier) -> {
             if (value != null && value.size() != size) {
                 result.addFailure(new ValidationResult.Failure(
-                    new CollectionValidationMetadata.ExactSize(identifier, size)
+                    CollectionValidationMetadata.exactSize(identifier, size)
                 ));
             }
         };
@@ -66,13 +66,8 @@ public final class CollectionValidationRules {
     public static <T extends Collection<?>> ValidationRule<T> sizeRange(int min, int max) {
         return (value, result, identifier) -> {
             if (value != null && (value.size() < min || value.size() > max)) {
-                CollectionValidationMetadata.SizeRange metadata =
-                    new CollectionValidationMetadata.SizeRange(identifier, min, max);
-                String messageWithActualSize = metadata.getMessageWithActualSize(value.size());
-
                 result.addFailure(new ValidationResult.Failure(
-                    new CollectionValidationMetadata.SizeRange(identifier,
-                        CollectionValidationMetadata.SIZE_RANGE_CODE, min, max, messageWithActualSize)
+                        CollectionValidationMetadata.sizeRange(identifier, min, max)
                 ));
             }
         };
@@ -83,7 +78,7 @@ public final class CollectionValidationRules {
         return (value, result, identifier) -> {
             if (value != null && !value.stream().allMatch(condition)) {
                 result.addFailure(new ValidationResult.Failure(
-                    new CollectionValidationMetadata.AllMatch<>(
+                    CollectionValidationMetadata.allMatch(
                         identifier, condition, conditionDescription
                     )
                 ));
@@ -96,7 +91,7 @@ public final class CollectionValidationRules {
         return (value, result, identifier) -> {
             if (value != null && !value.isEmpty() && value.stream().noneMatch(condition)) {
                 result.addFailure(new ValidationResult.Failure(
-                    new CollectionValidationMetadata.AnyMatch<>(
+                    CollectionValidationMetadata.anyMatch(
                         identifier, condition, conditionDescription
                     )
                 ));
@@ -109,7 +104,7 @@ public final class CollectionValidationRules {
         return (value, result, identifier) -> {
             if (value != null && value.stream().anyMatch(condition)) {
                 result.addFailure(new ValidationResult.Failure(
-                    new CollectionValidationMetadata.NoneMatch<>(
+                    CollectionValidationMetadata.noneMatch(
                         identifier, condition, conditionDescription
                     )
                 ));
@@ -123,7 +118,7 @@ public final class CollectionValidationRules {
                 long distinctCount = value.stream().distinct().count();
                 if (distinctCount != value.size()) {
                     result.addFailure(new ValidationResult.Failure(
-                        new CollectionValidationMetadata.NoDuplicates(identifier)
+                        CollectionValidationMetadata.noDuplicates(identifier)
                     ));
                 }
             }
@@ -134,7 +129,7 @@ public final class CollectionValidationRules {
         return (value, result, identifier) -> {
             if (value != null && !value.contains(element)) {
                 result.addFailure(new ValidationResult.Failure(
-                    new CollectionValidationMetadata.Contains<>(identifier, element)
+                    CollectionValidationMetadata.contains(identifier, element)
                 ));
             }
         };
@@ -144,7 +139,7 @@ public final class CollectionValidationRules {
         return (value, result, identifier) -> {
             if (value != null && value.contains(element)) {
                 result.addFailure(new ValidationResult.Failure(
-                    new CollectionValidationMetadata.DoesNotContain<>(identifier, element)
+                    CollectionValidationMetadata.doesNotContain(identifier, element)
                 ));
             }
         };
@@ -154,7 +149,7 @@ public final class CollectionValidationRules {
         return (value, result, identifier) -> {
             if (value != null && !value.containsAll(elements)) {
                 result.addFailure(new ValidationResult.Failure(
-                    new CollectionValidationMetadata.ContainsAll<>(identifier, elements)
+                    CollectionValidationMetadata.containsAll(identifier, elements)
                 ));
             }
         };
@@ -166,7 +161,7 @@ public final class CollectionValidationRules {
                 boolean hasCommonElement = value.stream().anyMatch(elements::contains);
                 if (hasCommonElement) {
                     result.addFailure(new ValidationResult.Failure(
-                        new CollectionValidationMetadata.ContainsNone<>(identifier, elements)
+                        CollectionValidationMetadata.containsNone(identifier, elements)
                     ));
                 }
             }

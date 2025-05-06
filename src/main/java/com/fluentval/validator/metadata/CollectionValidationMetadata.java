@@ -22,13 +22,6 @@ public abstract class CollectionValidationMetadata extends ValidationMetadata {
         addMessageParameter(MessageParameter.FIELD, identifier.value());
     }
 
-    /**
-     * Helper method to add a message parameter using the enum
-     */
-    protected void addMessageParameter(MessageParameter param, String value) {
-        addMessageParameter(param.getKey(), value);
-    }
-
     public static final class NotEmpty extends CollectionValidationMetadata {
 
         public NotEmpty(ValidationIdentifier identifier) {
@@ -104,10 +97,6 @@ public abstract class CollectionValidationMetadata extends ValidationMetadata {
             addMessageParameter(MessageParameter.MAX_SIZE, String.valueOf(maxSize));
         }
 
-        public void setActualSize(int actualSize) {
-            // This can be called when the actual size is known
-            addMessageParameter(MessageParameter.ACTUAL_SIZE, String.valueOf(actualSize));
-        }
     }
 
     @Getter
