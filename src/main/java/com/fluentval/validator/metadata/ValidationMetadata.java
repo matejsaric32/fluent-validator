@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.Objects;
 
 import com.fluentval.validator.ValidationIdentifier;
+import com.fluentval.validator.message.MessageParameter;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
@@ -25,6 +26,10 @@ public abstract class ValidationMetadata {
 
     protected void addMessageParameter(String key, String message) {
         messageParameters.put(key, message);
+    }
+
+    protected void addMessageParameter(MessageParameter key, String message) {
+        addMessageParameter(key.getKey(), message);
     }
 
 }

@@ -20,13 +20,6 @@ public abstract class CommonValidationMetadata extends ValidationMetadata {
         addMessageParameter(MessageParameter.FIELD, identifier.value());
     }
 
-    /**
-     * Helper method to add a message parameter using the enum
-     */
-    protected void addMessageParameter(MessageParameter param, String value) {
-        addMessageParameter(param.getKey(), value);
-    }
-
     public static final class NotNull extends CommonValidationMetadata {
 
         public NotNull(ValidationIdentifier identifier) {
