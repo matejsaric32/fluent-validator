@@ -33,6 +33,7 @@ public final class CommonValidationRules {
     }
 
     public static <T> ValidationRule<T> isEqual(final T object) {
+
         if (object == null) {
             throw new IllegalArgumentException("Reference object cannot be null");
         }
@@ -52,6 +53,7 @@ public final class CommonValidationRules {
     }
 
     public static <T> ValidationRule<T> isNotEqual(final T object) {
+
         if (object == null) {
             throw new IllegalArgumentException("Reference object cannot be null");
         }
@@ -71,6 +73,7 @@ public final class CommonValidationRules {
     }
 
     public static <T> ValidationRule<T> satisfies(final Predicate<T> predicate, final String message) {
+
         if (predicate == null) {
             throw new IllegalArgumentException("Predicate cannot be null");
         }
@@ -94,6 +97,7 @@ public final class CommonValidationRules {
     }
 
     public static <T> ValidationRule<T> isInstanceOf(final Class<?> clazz) {
+
         if (clazz == null) {
             throw new IllegalArgumentException("Class cannot be null");
         }
@@ -113,6 +117,7 @@ public final class CommonValidationRules {
     }
 
     public static <T> ValidationRule<T> isNotInstanceOf(final Class<?> clazz) {
+
         if (clazz == null) {
             throw new IllegalArgumentException("Class cannot be null");
         }
@@ -131,12 +136,18 @@ public final class CommonValidationRules {
         };
     }
 
-    public static <T> ValidationRule<T> isSameAs(T object) {
+    public static <T> ValidationRule<T> isSameAs(final T object) {
+
         if (object == null) {
             throw new IllegalArgumentException("Reference object cannot be null");
         }
 
         return (value, result, identifier) -> {
+            if (value == null) {
+                // Skip validation for null value
+                return;
+            }
+
             if (value != object) {
                 result.addFailure(new ValidationResult.Failure(
                         CommonValidationMetadata.sameAs(identifier, object)
@@ -151,6 +162,11 @@ public final class CommonValidationRules {
         }
 
         return (value, result, identifier) -> {
+            if (value == null) {
+                // Skip validation for null value
+                return;
+            }
+
             if (value == object) {
                 result.addFailure(new ValidationResult.Failure(
                         CommonValidationMetadata.notSameAs(identifier, object)
