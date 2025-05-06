@@ -17,18 +17,18 @@ public abstract class ValidationMetadata {
     
     private final ValidationIdentifier identifier;
     private final String errorCode;
-    private final Map<String, String> messageParameters = new HashMap<>();
+    private final Map<String, Object> messageParameters = new HashMap<>();
 
     protected ValidationMetadata(ValidationIdentifier identifier, String errorCode, Map<String, String> messageParameters) {
         this.identifier = Objects.requireNonNull(identifier, "Identifier cannot be null");
         this.errorCode = Objects.requireNonNull(errorCode, "ErrorCode cannot be null");
     }
 
-    protected void addMessageParameter(String key, String message) {
+    protected void addMessageParameter(String key, Object message) {
         messageParameters.put(key, message);
     }
 
-    protected void addMessageParameter(MessageParameter key, String message) {
+    protected void addMessageParameter(MessageParameter key, Object message) {
         addMessageParameter(key.getKey(), message);
     }
 
