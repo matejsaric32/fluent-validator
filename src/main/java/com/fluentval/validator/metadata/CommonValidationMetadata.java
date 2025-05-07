@@ -4,34 +4,29 @@ import com.fluentval.validator.ValidationIdentifier;
 import com.fluentval.validator.message.MessageParameter;
 import lombok.Getter;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Objects;
 import java.util.function.Predicate;
 
 public abstract class CommonValidationMetadata extends ValidationMetadata {
 
     protected CommonValidationMetadata(ValidationIdentifier identifier,
-                                       DefaultValidationCode code,
-                                       Map<String, String> messageParameters) {
-        super(identifier, code.getCode(), messageParameters);
+                                       DefaultValidationCode code) {
+        super(identifier, code.getCode());
 
         // Always add the field identifier as a parameter
         addMessageParameter(MessageParameter.FIELD, identifier.value());
     }
 
     public static final class NotNull extends CommonValidationMetadata {
-
         public NotNull(ValidationIdentifier identifier) {
-            super(identifier, DefaultValidationCode.NOT_NULL, new HashMap<>());
+            super(identifier, DefaultValidationCode.NOT_NULL);
             // Field parameter is already added in the parent constructor
         }
     }
 
     public static final class MustBeNull extends CommonValidationMetadata {
-
         public MustBeNull(ValidationIdentifier identifier) {
-            super(identifier, DefaultValidationCode.MUST_BE_NULL, new HashMap<>());
+            super(identifier, DefaultValidationCode.MUST_BE_NULL);
             // Field parameter is already added in the parent constructor
         }
     }
@@ -41,7 +36,7 @@ public abstract class CommonValidationMetadata extends ValidationMetadata {
         private final T targetObject;
 
         public Equal(ValidationIdentifier identifier, T targetObject) {
-            super(identifier, DefaultValidationCode.IS_EQUAL, new HashMap<>());
+            super(identifier, DefaultValidationCode.IS_EQUAL);
             this.targetObject = targetObject;
 
             // Add message parameter for the target value
@@ -54,7 +49,7 @@ public abstract class CommonValidationMetadata extends ValidationMetadata {
         private final T targetObject;
 
         public NotEqual(ValidationIdentifier identifier, T targetObject) {
-            super(identifier, DefaultValidationCode.IS_NOT_EQUAL, new HashMap<>());
+            super(identifier, DefaultValidationCode.IS_NOT_EQUAL);
             this.targetObject = targetObject;
 
             // Add message parameter for the target value
@@ -68,7 +63,7 @@ public abstract class CommonValidationMetadata extends ValidationMetadata {
         private final String predicateDescription;
 
         public Satisfies(ValidationIdentifier identifier, Predicate<T> predicate, String predicateDescription) {
-            super(identifier, DefaultValidationCode.SATISFIES, new HashMap<>());
+            super(identifier, DefaultValidationCode.SATISFIES);
             this.predicate = Objects.requireNonNull(predicate, "Predicate must not be null");
             this.predicateDescription = predicateDescription;
 
@@ -82,7 +77,7 @@ public abstract class CommonValidationMetadata extends ValidationMetadata {
         private final Class<?> targetClass;
 
         public InstanceOf(ValidationIdentifier identifier, Class<?> targetClass) {
-            super(identifier, DefaultValidationCode.IS_INSTANCE_OF, new HashMap<>());
+            super(identifier, DefaultValidationCode.IS_INSTANCE_OF);
             this.targetClass = Objects.requireNonNull(targetClass, "Class must not be null");
 
             // Add message parameter for the class name
@@ -95,7 +90,7 @@ public abstract class CommonValidationMetadata extends ValidationMetadata {
         private final Class<?> targetClass;
 
         public NotInstanceOf(ValidationIdentifier identifier, Class<?> targetClass) {
-            super(identifier, DefaultValidationCode.IS_NOT_INSTANCE_OF, new HashMap<>());
+            super(identifier, DefaultValidationCode.IS_NOT_INSTANCE_OF);
             this.targetClass = Objects.requireNonNull(targetClass, "Class must not be null");
 
             // Add message parameter for the class name
@@ -108,7 +103,7 @@ public abstract class CommonValidationMetadata extends ValidationMetadata {
         private final T targetObject;
 
         public SameAs(ValidationIdentifier identifier, T targetObject) {
-            super(identifier, DefaultValidationCode.IS_SAME_AS, new HashMap<>());
+            super(identifier, DefaultValidationCode.IS_SAME_AS);
             this.targetObject = targetObject;
 
             // Add reference parameter
@@ -121,7 +116,7 @@ public abstract class CommonValidationMetadata extends ValidationMetadata {
         private final T targetObject;
 
         public NotSameAs(ValidationIdentifier identifier, T targetObject) {
-            super(identifier, DefaultValidationCode.IS_NOT_SAME_AS, new HashMap<>());
+            super(identifier, DefaultValidationCode.IS_NOT_SAME_AS);
             this.targetObject = targetObject;
 
             // Add reference parameter
