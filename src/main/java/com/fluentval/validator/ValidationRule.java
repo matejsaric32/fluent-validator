@@ -5,6 +5,7 @@ import lombok.Getter;
 
 import java.util.List;
 import java.util.function.Consumer;
+import java.util.function.Function;
 import java.util.function.Predicate;
 
 @FunctionalInterface
@@ -128,6 +129,38 @@ public interface ValidationRule<T> {
     static <V> ValidationRule<V> noop() {
         return (value, result, identifier) -> {
         };
+    }
+
+    // Add a method to enrich validation metadata
+    default ValidationRule<T> withMetadata(Consumer<ValidationMetadata> enricher) {
+        return (value, result, identifier) -> {
+            // Keep track of failures before validation
+            int initialFailureCount = result.getFailures().size();
+
+            // Execute the validation
+            validate(value, result, identifier);
+
+            // Enrich any new failures
+            for (int i = initialFailureCount; i < result.getFailures().size(); i++) {
+                result.getFailures().get(i).withEnrichedMetadata(enricher);
+            }
+        };
+    }
+
+    default ValidationRule<T> withSeverity(ValidationMetadata.ValidationSeverity severity) {
+        return withMetadata(metadata -> metadata.setSeverity(severity));
+    }
+
+    default ValidationRule<T> withCategory(String category) {
+        return withMetadata(metadata -> metadata.setCategory(category));
+    }
+
+    default ValidationRule<T> withGroup(String group) {
+        return withMetadata(metadata -> metadata.setValidationGroup(group));
+    }
+
+    default ValidationRule<T> blocking(boolean blocking) {
+        return withMetadata(metadata -> metadata.setBlocking(blocking));
     }
 
     @Getter

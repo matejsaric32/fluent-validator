@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 public class ValidationResult {
@@ -51,27 +52,6 @@ public class ValidationResult {
         other.getFailures().forEach(this::addFailure);
     }
 
-    public String getErrorMessages() {
-        return failures.stream()
-                .map(failure -> {
-                    ValidationMetadata metadata = failure.getValidationMetadata();
-                    return ValidationMessageRegistry.getInstance().getMessage(
-                            metadata.getErrorCode(),
-                            metadata.getIdentifier(),
-                            metadata.getMessageParameters()
-                    );
-                })
-                .collect(Collectors.joining(", "));
-    }
-
-    @Override
-    public String toString() {
-        if (!hasErrors()) {
-            return "ValidationResult: No errors";
-        }
-        return "ValidationResult: " + getErrorMessages();
-    }
-
     public static ValidationResult success() {
         return new ValidationResult(); // Empty result means success
     }
@@ -89,6 +69,11 @@ public class ValidationResult {
 
         public Failure(ValidationMetadata validationMetadata) {
             this.validationMetadata = validationMetadata;
+        }
+
+        public Failure withEnrichedMetadata(Consumer<ValidationMetadata> enricher) {
+            validationMetadata.enrich(enricher);
+            return this;
         }
     }
 }
