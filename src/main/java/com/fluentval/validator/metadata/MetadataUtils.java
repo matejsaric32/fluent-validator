@@ -10,4 +10,5 @@ public class MetadataUtils {
     public static final String CONDITION_PREDICATE_MUST_NOT_BE_NULL_MSG = "Condition predicate must not be null";
     public static final String CONDITION_DESCRIPTION_MUST_NOT_BE_NULL_MSG = "Condition description must not be null";
     public static final String REFERENCE_DATE_MUST_NOT_BE_NULL_MSG = "Reference date must not be null";
+    public static final String REFERENCE_TIME_MUST_NOT_BE_NULL_MSG = "Reference time must not be null";
 }

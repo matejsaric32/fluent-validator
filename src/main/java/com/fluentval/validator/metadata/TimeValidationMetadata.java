@@ -2,6 +2,7 @@ package com.fluentval.validator.metadata;
 
 import com.fluentval.validator.ValidationIdentifier;
 import com.fluentval.validator.message.MessageParameter;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 
 import java.time.ZoneId;
@@ -19,6 +20,7 @@ public abstract class TimeValidationMetadata extends ValidationMetadata {
     }
 
     @Getter
+    @EqualsAndHashCode(callSuper = false)
     public static final class InRange<T extends Temporal & Comparable<? super T>> extends TimeValidationMetadata {
         private final T min;
         private final T max;
@@ -35,6 +37,7 @@ public abstract class TimeValidationMetadata extends ValidationMetadata {
     }
 
     @Getter
+    @EqualsAndHashCode(callSuper = false)
     public static final class Before<T extends Temporal & Comparable<? super T>> extends TimeValidationMetadata {
         private final T reference;
 
@@ -48,6 +51,7 @@ public abstract class TimeValidationMetadata extends ValidationMetadata {
     }
 
     @Getter
+    @EqualsAndHashCode(callSuper = false)
     public static final class After<T extends Temporal & Comparable<? super T>> extends TimeValidationMetadata {
         private final T reference;
 
@@ -61,6 +65,7 @@ public abstract class TimeValidationMetadata extends ValidationMetadata {
     }
 
     @Getter
+    @EqualsAndHashCode(callSuper = false)
     public static final class BeforeOrEquals<T extends Temporal & Comparable<? super T>> extends TimeValidationMetadata {
         private final T reference;
 
@@ -74,6 +79,7 @@ public abstract class TimeValidationMetadata extends ValidationMetadata {
     }
 
     @Getter
+    @EqualsAndHashCode(callSuper = false)
     public static final class AfterOrEquals<T extends Temporal & Comparable<? super T>> extends TimeValidationMetadata {
         private final T reference;
 
@@ -87,6 +93,7 @@ public abstract class TimeValidationMetadata extends ValidationMetadata {
     }
 
     @Getter
+    @EqualsAndHashCode(callSuper = false)
     public static final class Equals<T extends Temporal & Comparable<? super T>> extends TimeValidationMetadata {
         private final T reference;
 
@@ -100,6 +107,7 @@ public abstract class TimeValidationMetadata extends ValidationMetadata {
     }
 
     @Getter
+    @EqualsAndHashCode(callSuper = false)
     public static final class IsMorning extends TimeValidationMetadata {
         private IsMorning(ValidationIdentifier identifier) {
             super(identifier, DefaultValidationCode.IS_MORNING);
@@ -111,6 +119,7 @@ public abstract class TimeValidationMetadata extends ValidationMetadata {
     }
 
     @Getter
+    @EqualsAndHashCode(callSuper = false)
     public static final class IsAfternoon extends TimeValidationMetadata {
         private IsAfternoon(ValidationIdentifier identifier) {
             super(identifier, DefaultValidationCode.IS_AFTERNOON);
@@ -122,6 +131,7 @@ public abstract class TimeValidationMetadata extends ValidationMetadata {
     }
 
     @Getter
+    @EqualsAndHashCode(callSuper = false)
     public static final class IsEvening extends TimeValidationMetadata {
         private IsEvening(ValidationIdentifier identifier) {
             super(identifier, DefaultValidationCode.IS_EVENING);
@@ -133,6 +143,7 @@ public abstract class TimeValidationMetadata extends ValidationMetadata {
     }
 
     @Getter
+    @EqualsAndHashCode(callSuper = false)
     public static final class IsBusinessHours extends TimeValidationMetadata {
         private IsBusinessHours(ValidationIdentifier identifier) {
             super(identifier, DefaultValidationCode.IS_BUSINESS_HOURS);
@@ -144,6 +155,7 @@ public abstract class TimeValidationMetadata extends ValidationMetadata {
     }
 
     @Getter
+    @EqualsAndHashCode(callSuper = false)
     public static final class IsLunchHour extends TimeValidationMetadata {
         private IsLunchHour(ValidationIdentifier identifier) {
             super(identifier, DefaultValidationCode.IS_LUNCH_HOUR);
@@ -155,6 +167,7 @@ public abstract class TimeValidationMetadata extends ValidationMetadata {
     }
 
     @Getter
+    @EqualsAndHashCode(callSuper = false)
     public static final class HoursBetween extends TimeValidationMetadata {
         private final int minHour;
         private final int maxHour;
@@ -171,6 +184,7 @@ public abstract class TimeValidationMetadata extends ValidationMetadata {
     }
 
     @Getter
+    @EqualsAndHashCode(callSuper = false)
     public static final class MinutesBetween extends TimeValidationMetadata {
         private final int minMinute;
         private final int maxMinute;
@@ -187,6 +201,7 @@ public abstract class TimeValidationMetadata extends ValidationMetadata {
     }
 
     @Getter
+    @EqualsAndHashCode(callSuper = false)
     public static final class SecondsBetween extends TimeValidationMetadata {
         private final int minSecond;
         private final int maxSecond;
@@ -203,6 +218,7 @@ public abstract class TimeValidationMetadata extends ValidationMetadata {
     }
 
     @Getter
+    @EqualsAndHashCode(callSuper = false)
     public static final class InTimeZone extends TimeValidationMetadata {
         private final ZoneId zoneId;
 
@@ -217,7 +233,7 @@ public abstract class TimeValidationMetadata extends ValidationMetadata {
 
     // Factory methods
     public static <T extends Temporal & Comparable<? super T>> InRange<T> inRange(ValidationIdentifier identifier, T min, T max) {
-        Objects.requireNonNull(identifier, "Identifier must not be null");
+        Objects.requireNonNull(identifier, MetadataUtils.IDENTIFIER_MUST_NOT_BE_NULL_MSG);
         Objects.requireNonNull(min, "Min value must not be null");
         Objects.requireNonNull(max, "Max value must not be null");
 
@@ -229,72 +245,72 @@ public abstract class TimeValidationMetadata extends ValidationMetadata {
     }
 
     public static <T extends Temporal & Comparable<? super T>> Before<T> before(ValidationIdentifier identifier, T reference) {
-        Objects.requireNonNull(identifier, "Identifier must not be null");
-        Objects.requireNonNull(reference, "Reference time must not be null");
+        Objects.requireNonNull(identifier, MetadataUtils.IDENTIFIER_MUST_NOT_BE_NULL_MSG);
+        Objects.requireNonNull(reference, MetadataUtils.REFERENCE_TIME_MUST_NOT_BE_NULL_MSG);
 
         return new Before<>(identifier, reference);
     }
 
     public static <T extends Temporal & Comparable<? super T>> After<T> after(ValidationIdentifier identifier, T reference) {
-        Objects.requireNonNull(identifier, "Identifier must not be null");
-        Objects.requireNonNull(reference, "Reference time must not be null");
+        Objects.requireNonNull(identifier, MetadataUtils.IDENTIFIER_MUST_NOT_BE_NULL_MSG);
+        Objects.requireNonNull(reference, MetadataUtils.REFERENCE_TIME_MUST_NOT_BE_NULL_MSG);
 
         return new After<>(identifier, reference);
     }
 
     public static <T extends Temporal & Comparable<? super T>> BeforeOrEquals<T> beforeOrEquals(ValidationIdentifier identifier, T reference) {
-        Objects.requireNonNull(identifier, "Identifier must not be null");
-        Objects.requireNonNull(reference, "Reference time must not be null");
+        Objects.requireNonNull(identifier, MetadataUtils.IDENTIFIER_MUST_NOT_BE_NULL_MSG);
+        Objects.requireNonNull(reference, MetadataUtils.REFERENCE_TIME_MUST_NOT_BE_NULL_MSG);
 
         return new BeforeOrEquals<>(identifier, reference);
     }
 
     public static <T extends Temporal & Comparable<? super T>> AfterOrEquals<T> afterOrEquals(ValidationIdentifier identifier, T reference) {
-        Objects.requireNonNull(identifier, "Identifier must not be null");
-        Objects.requireNonNull(reference, "Reference time must not be null");
+        Objects.requireNonNull(identifier, MetadataUtils.IDENTIFIER_MUST_NOT_BE_NULL_MSG);
+        Objects.requireNonNull(reference, MetadataUtils.REFERENCE_TIME_MUST_NOT_BE_NULL_MSG);
 
         return new AfterOrEquals<>(identifier, reference);
     }
 
     public static <T extends Temporal & Comparable<? super T>> Equals<T> equals(ValidationIdentifier identifier, T reference) {
-        Objects.requireNonNull(identifier, "Identifier must not be null");
-        Objects.requireNonNull(reference, "Reference time must not be null");
+        Objects.requireNonNull(identifier, MetadataUtils.IDENTIFIER_MUST_NOT_BE_NULL_MSG);
+        Objects.requireNonNull(reference, MetadataUtils.REFERENCE_TIME_MUST_NOT_BE_NULL_MSG);
 
         return new Equals<>(identifier, reference);
     }
 
     public static IsMorning isMorning(ValidationIdentifier identifier) {
-        Objects.requireNonNull(identifier, "Identifier must not be null");
+        Objects.requireNonNull(identifier, MetadataUtils.IDENTIFIER_MUST_NOT_BE_NULL_MSG);
 
         return new IsMorning(identifier);
     }
 
     public static IsAfternoon isAfternoon(ValidationIdentifier identifier) {
-        Objects.requireNonNull(identifier, "Identifier must not be null");
+        Objects.requireNonNull(identifier, MetadataUtils.IDENTIFIER_MUST_NOT_BE_NULL_MSG);
 
         return new IsAfternoon(identifier);
     }
 
     public static IsEvening isEvening(ValidationIdentifier identifier) {
-        Objects.requireNonNull(identifier, "Identifier must not be null");
+        Objects.requireNonNull(identifier, MetadataUtils.IDENTIFIER_MUST_NOT_BE_NULL_MSG);
 
         return new IsEvening(identifier);
     }
 
     public static IsBusinessHours isBusinessHours(ValidationIdentifier identifier) {
-        Objects.requireNonNull(identifier, "Identifier must not be null");
+        Objects.requireNonNull(identifier, MetadataUtils.IDENTIFIER_MUST_NOT_BE_NULL_MSG);
 
         return new IsBusinessHours(identifier);
     }
 
     public static IsLunchHour isLunchHour(ValidationIdentifier identifier) {
-        Objects.requireNonNull(identifier, "Identifier must not be null");
+        Objects.requireNonNull(identifier, MetadataUtils.IDENTIFIER_MUST_NOT_BE_NULL_MSG);
 
         return new IsLunchHour(identifier);
     }
 
     public static HoursBetween hoursBetween(ValidationIdentifier identifier, int minHour, int maxHour) {
-        Objects.requireNonNull(identifier, "Identifier must not be null");
+        Objects.requireNonNull(identifier, MetadataUtils.IDENTIFIER_MUST_NOT_BE_NULL_MSG);
 
         if (minHour < 0 || minHour > 23) {
             throw new IllegalArgumentException("Min hour must be between 0 - 23");
@@ -310,7 +326,7 @@ public abstract class TimeValidationMetadata extends ValidationMetadata {
     }
 
     public static MinutesBetween minutesBetween(ValidationIdentifier identifier, int minMinute, int maxMinute) {
-        Objects.requireNonNull(identifier, "Identifier must not be null");
+        Objects.requireNonNull(identifier, MetadataUtils.IDENTIFIER_MUST_NOT_BE_NULL_MSG);
 
         if (minMinute < 0 || minMinute > 59) {
             throw new IllegalArgumentException("Min minute must be between 0 - 59");
@@ -326,7 +342,7 @@ public abstract class TimeValidationMetadata extends ValidationMetadata {
     }
 
     public static SecondsBetween secondsBetween(ValidationIdentifier identifier, int minSecond, int maxSecond) {
-        Objects.requireNonNull(identifier, "Identifier must not be null");
+        Objects.requireNonNull(identifier, MetadataUtils.IDENTIFIER_MUST_NOT_BE_NULL_MSG);
 
         if (minSecond < 0 || minSecond > 59) {
             throw new IllegalArgumentException("Min second must be between 0 - 59");
@@ -342,7 +358,7 @@ public abstract class TimeValidationMetadata extends ValidationMetadata {
     }
 
     public static InTimeZone inTimeZone(ValidationIdentifier identifier, ZoneId zoneId) {
-        Objects.requireNonNull(identifier, "Identifier must not be null");
+        Objects.requireNonNull(identifier, MetadataUtils.IDENTIFIER_MUST_NOT_BE_NULL_MSG);
         Objects.requireNonNull(zoneId, "ZoneId must not be null");
 
         return new InTimeZone(identifier, zoneId);
