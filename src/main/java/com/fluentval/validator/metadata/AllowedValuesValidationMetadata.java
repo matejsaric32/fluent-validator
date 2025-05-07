@@ -2,6 +2,7 @@ package com.fluentval.validator.metadata;
 
 import com.fluentval.validator.ValidationIdentifier;
 import com.fluentval.validator.message.MessageParameter;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 
 import java.util.*;
@@ -18,6 +19,7 @@ public abstract class AllowedValuesValidationMetadata extends ValidationMetadata
     }
 
     @Getter
+    @EqualsAndHashCode(callSuper = false)
     public static final class Contains<T> extends AllowedValuesValidationMetadata {
         private final Set<T> allowedValues;
         private final String allowedValuesString;
@@ -33,6 +35,7 @@ public abstract class AllowedValuesValidationMetadata extends ValidationMetadata
     }
 
     @Getter
+    @EqualsAndHashCode(callSuper = false)
     public static final class OneOf<T> extends AllowedValuesValidationMetadata {
         private final T[] allowedValues;
         private final String allowedValuesString;
@@ -53,6 +56,7 @@ public abstract class AllowedValuesValidationMetadata extends ValidationMetadata
     }
 
     @Getter
+    @EqualsAndHashCode(callSuper = false)
     public static final class NotContains<T> extends AllowedValuesValidationMetadata {
         private final Set<T> disallowedValues;
         private final String disallowedValuesString;
@@ -72,6 +76,7 @@ public abstract class AllowedValuesValidationMetadata extends ValidationMetadata
     }
 
     @Getter
+    @EqualsAndHashCode(callSuper = false)
     public static final class NoneOf<T> extends AllowedValuesValidationMetadata {
         private final T[] disallowedValues;
         private final String disallowedValuesString;
@@ -92,6 +97,7 @@ public abstract class AllowedValuesValidationMetadata extends ValidationMetadata
     }
 
     @Getter
+    @EqualsAndHashCode(callSuper = false)
     public static final class IsInEnum<E extends Enum<E>> extends AllowedValuesValidationMetadata {
         private final Class<E> enumClass;
         private final Set<E> enumValues;
@@ -127,7 +133,7 @@ public abstract class AllowedValuesValidationMetadata extends ValidationMetadata
 
     // Factory methods
     public static <T> Contains<T> contains(ValidationIdentifier identifier, Set<T> allowedValues, String allowedValuesString) {
-        Objects.requireNonNull(identifier, "Identifier must not be null");
+        Objects.requireNonNull(identifier, MetadataUtils.IDENTIFIER_MUST_NOT_BE_NULL_MSG);
         Objects.requireNonNull(allowedValues, "Allowed values set must not be null");
         Objects.requireNonNull(allowedValuesString, "Allowed values string must not be null");
 
@@ -140,7 +146,7 @@ public abstract class AllowedValuesValidationMetadata extends ValidationMetadata
 
     @SafeVarargs
     public static <T> OneOf<T> oneOf(ValidationIdentifier identifier, String allowedValuesString, T... allowedValues) {
-        Objects.requireNonNull(identifier, "Identifier must not be null");
+        Objects.requireNonNull(identifier, MetadataUtils.IDENTIFIER_MUST_NOT_BE_NULL_MSG);
         Objects.requireNonNull(allowedValuesString, "Allowed values string must not be null");
         Objects.requireNonNull(allowedValues, "Allowed values array must not be null");
 
@@ -152,7 +158,7 @@ public abstract class AllowedValuesValidationMetadata extends ValidationMetadata
     }
 
     public static <T> NotContains<T> notContains(ValidationIdentifier identifier, Set<T> disallowedValues, String disallowedValuesString) {
-        Objects.requireNonNull(identifier, "Identifier must not be null");
+        Objects.requireNonNull(identifier, MetadataUtils.IDENTIFIER_MUST_NOT_BE_NULL_MSG);
         Objects.requireNonNull(disallowedValues, "Disallowed values set must not be null");
         Objects.requireNonNull(disallowedValuesString, "Disallowed values string must not be null");
 
@@ -165,7 +171,7 @@ public abstract class AllowedValuesValidationMetadata extends ValidationMetadata
 
     @SafeVarargs
     public static <T> NoneOf<T> noneOf(ValidationIdentifier identifier, String disallowedValuesString, T... disallowedValues) {
-        Objects.requireNonNull(identifier, "Identifier must not be null");
+        Objects.requireNonNull(identifier, MetadataUtils.IDENTIFIER_MUST_NOT_BE_NULL_MSG);
         Objects.requireNonNull(disallowedValuesString, "Disallowed values string must not be null");
         Objects.requireNonNull(disallowedValues, "Disallowed values array must not be null");
 
@@ -177,7 +183,7 @@ public abstract class AllowedValuesValidationMetadata extends ValidationMetadata
     }
 
     public static <E extends Enum<E>> IsInEnum<E> isInEnum(ValidationIdentifier identifier, Class<E> enumClass) {
-        Objects.requireNonNull(identifier, "Identifier must not be null");
+        Objects.requireNonNull(identifier, MetadataUtils.IDENTIFIER_MUST_NOT_BE_NULL_MSG);
         Objects.requireNonNull(enumClass, "Enum class must not be null");
 
         return new IsInEnum<>(identifier, enumClass);
