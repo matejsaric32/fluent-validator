@@ -266,7 +266,7 @@ public abstract class CollectionValidationMetadata extends ValidationMetadata {
 
     public static <E> AllMatch<E> allMatch(ValidationIdentifier identifier, Predicate<E> condition, String description) {
         Objects.requireNonNull(identifier, MetadataUtils.IDENTIFIER_MUST_NOT_BE_NULL_MSG);
-        Objects.requireNonNull(condition, MetadataUtils.IDENTIFIER_MUST_NOT_BE_NULL_MSG);
+        Objects.requireNonNull(condition, MetadataUtils.CONDITION_PREDICATE_MUST_NOT_BE_NULL_MSG);
         Objects.requireNonNull(description, MetadataUtils.CONDITION_DESCRIPTION_MUST_NOT_BE_NULL_MSG);
         if (description.isBlank()) {
             throw new IllegalArgumentException("Condition description must not be blank");
@@ -276,7 +276,7 @@ public abstract class CollectionValidationMetadata extends ValidationMetadata {
 
     public static <E> AnyMatch<E> anyMatch(ValidationIdentifier identifier, Predicate<E> condition, String description) {
         Objects.requireNonNull(identifier, MetadataUtils.IDENTIFIER_MUST_NOT_BE_NULL_MSG);
-        Objects.requireNonNull(condition, MetadataUtils.IDENTIFIER_MUST_NOT_BE_NULL_MSG);
+        Objects.requireNonNull(condition, MetadataUtils.CONDITION_PREDICATE_MUST_NOT_BE_NULL_MSG);
         Objects.requireNonNull(description, MetadataUtils.CONDITION_DESCRIPTION_MUST_NOT_BE_NULL_MSG);
         if (description.isBlank()) {
             throw new IllegalArgumentException("Condition description must not be blank");
@@ -286,7 +286,7 @@ public abstract class CollectionValidationMetadata extends ValidationMetadata {
 
     public static <E> NoneMatch<E> noneMatch(ValidationIdentifier identifier, Predicate<E> condition, String description) {
         Objects.requireNonNull(identifier, MetadataUtils.IDENTIFIER_MUST_NOT_BE_NULL_MSG);
-        Objects.requireNonNull(condition, MetadataUtils.IDENTIFIER_MUST_NOT_BE_NULL_MSG);
+        Objects.requireNonNull(condition, MetadataUtils.CONDITION_PREDICATE_MUST_NOT_BE_NULL_MSG);
         Objects.requireNonNull(description, MetadataUtils.CONDITION_DESCRIPTION_MUST_NOT_BE_NULL_MSG);
         if (description.isBlank()) {
             throw new IllegalArgumentException("Condition description must not be blank");
