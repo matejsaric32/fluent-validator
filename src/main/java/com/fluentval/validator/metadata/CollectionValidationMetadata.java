@@ -2,6 +2,7 @@ package com.fluentval.validator.metadata;
 
 import com.fluentval.validator.ValidationIdentifier;
 import com.fluentval.validator.message.MessageParameter;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 
 import java.util.ArrayList;
@@ -34,48 +35,52 @@ public abstract class CollectionValidationMetadata extends ValidationMetadata {
     }
 
     @Getter
+    @EqualsAndHashCode(callSuper = true)
     public static final class MinSize extends CollectionValidationMetadata {
-        private final int minSize;
+        private final int minimumSize;
 
-        private MinSize(ValidationIdentifier identifier, int minSize) {
+        private MinSize(ValidationIdentifier identifier, int minimumSize) {
             super(identifier, DefaultValidationCode.MIN_SIZE);
-            this.minSize = minSize;
+            this.minimumSize = minimumSize;
 
             // Add message parameters
-            addMessageParameter(MessageParameter.MIN_SIZE, String.valueOf(minSize));
+            addMessageParameter(MessageParameter.MIN_SIZE, String.valueOf(minimumSize));
         }
     }
 
     @Getter
+    @EqualsAndHashCode(callSuper = true)
     public static final class MaxSize extends CollectionValidationMetadata {
-        private final int maxSize;
+        private final int maximunSize;
 
-        private MaxSize(ValidationIdentifier identifier, int maxSize) {
+        private MaxSize(ValidationIdentifier identifier, int maximunSize) {
             super(identifier, DefaultValidationCode.MAX_SIZE);
-            this.maxSize = maxSize;
+            this.maximunSize = maximunSize;
 
             // Add message parameters
-            addMessageParameter(MessageParameter.MAX_SIZE, String.valueOf(maxSize));
+            addMessageParameter(MessageParameter.MAX_SIZE, String.valueOf(maximunSize));
         }
     }
 
     @Getter
+    @EqualsAndHashCode(callSuper = true)
     public static final class ExactSize extends CollectionValidationMetadata {
-        private final int exactSize;
+        private final int requiredSize;
         private final int actualSize;
 
-        private ExactSize(ValidationIdentifier identifier, int exactSize, int actualSize) {
+        private ExactSize(ValidationIdentifier identifier, int requiredSize, int actualSize) {
             super(identifier, DefaultValidationCode.EXACT_SIZE);
-            this.exactSize = exactSize;
+            this.requiredSize = requiredSize;
             this.actualSize = actualSize;
 
             // Add message parameters
-            addMessageParameter(MessageParameter.EXACT_SIZE, String.valueOf(exactSize));
+            addMessageParameter(MessageParameter.EXACT_SIZE, String.valueOf(requiredSize));
             addMessageParameter(MessageParameter.ACTUAL_SIZE, String.valueOf(actualSize));
         }
     }
 
     @Getter
+    @EqualsAndHashCode(callSuper = true)
     public static final class SizeRange extends CollectionValidationMetadata {
         private final int minSize;
         private final int maxSize;
@@ -95,6 +100,7 @@ public abstract class CollectionValidationMetadata extends ValidationMetadata {
     }
 
     @Getter
+    @EqualsAndHashCode(callSuper = true)
     public static final class AllMatch<E> extends CollectionValidationMetadata {
         private final Predicate<E> condition;
         private final String conditionDescription;
@@ -110,6 +116,7 @@ public abstract class CollectionValidationMetadata extends ValidationMetadata {
     }
 
     @Getter
+    @EqualsAndHashCode(callSuper = true)
     public static final class AnyMatch<E> extends CollectionValidationMetadata {
         private final Predicate<E> condition;
         private final String conditionDescription;
@@ -125,6 +132,7 @@ public abstract class CollectionValidationMetadata extends ValidationMetadata {
     }
 
     @Getter
+    @EqualsAndHashCode(callSuper = true)
     public static final class NoneMatch<E> extends CollectionValidationMetadata {
         private final Predicate<E> condition;
         private final String conditionDescription;
@@ -140,6 +148,7 @@ public abstract class CollectionValidationMetadata extends ValidationMetadata {
     }
 
     @Getter
+    @EqualsAndHashCode(callSuper = true)
     public static final class NoDuplicates extends CollectionValidationMetadata {
         private NoDuplicates(ValidationIdentifier identifier) {
             super(identifier, DefaultValidationCode.NO_DUPLICATES);
@@ -148,6 +157,7 @@ public abstract class CollectionValidationMetadata extends ValidationMetadata {
     }
 
     @Getter
+    @EqualsAndHashCode(callSuper = true)
     public static final class Contains<E> extends CollectionValidationMetadata {
         private final E element;
 
@@ -161,6 +171,7 @@ public abstract class CollectionValidationMetadata extends ValidationMetadata {
     }
 
     @Getter
+    @EqualsAndHashCode(callSuper = true)
     public static final class DoesNotContain<E> extends CollectionValidationMetadata {
         private final E element;
 
@@ -174,6 +185,7 @@ public abstract class CollectionValidationMetadata extends ValidationMetadata {
     }
 
     @Getter
+    @EqualsAndHashCode(callSuper = true)
     public static final class ContainsAll<E> extends CollectionValidationMetadata {
         private final Collection<E> elements;
 
@@ -187,6 +199,7 @@ public abstract class CollectionValidationMetadata extends ValidationMetadata {
     }
 
     @Getter
+    @EqualsAndHashCode(callSuper = true)
     public static final class ContainsNone<E> extends CollectionValidationMetadata {
         private final Collection<E> elements;
 
@@ -201,17 +214,17 @@ public abstract class CollectionValidationMetadata extends ValidationMetadata {
 
     // Factory methods
     public static NotEmpty notEmpty(ValidationIdentifier identifier) {
-        Objects.requireNonNull(identifier, "Identifier must not be null");
+        Objects.requireNonNull(identifier, MetadataUtils.IDENTIFIER_MUST_NOT_BE_NULL_MSG);
         return new NotEmpty(identifier);
     }
 
     public static IsEmpty isEmpty(ValidationIdentifier identifier) {
-        Objects.requireNonNull(identifier, "Identifier must not be null");
+        Objects.requireNonNull(identifier, MetadataUtils.IDENTIFIER_MUST_NOT_BE_NULL_MSG);
         return new IsEmpty(identifier);
     }
 
     public static MinSize minSize(ValidationIdentifier identifier, int minSize) {
-        Objects.requireNonNull(identifier, "Identifier must not be null");
+        Objects.requireNonNull(identifier, MetadataUtils.IDENTIFIER_MUST_NOT_BE_NULL_MSG);
         if (minSize < 0) {
             throw new IllegalArgumentException("Minimum size cannot be negative");
         }
@@ -219,7 +232,7 @@ public abstract class CollectionValidationMetadata extends ValidationMetadata {
     }
 
     public static MaxSize maxSize(ValidationIdentifier identifier, int maxSize) {
-        Objects.requireNonNull(identifier, "Identifier must not be null");
+        Objects.requireNonNull(identifier, MetadataUtils.IDENTIFIER_MUST_NOT_BE_NULL_MSG);
         if (maxSize < 0) {
             throw new IllegalArgumentException("Maximum size cannot be negative");
         }
@@ -227,7 +240,7 @@ public abstract class CollectionValidationMetadata extends ValidationMetadata {
     }
 
     public static ExactSize exactSize(ValidationIdentifier identifier, int exactSize, int actualSize) {
-        Objects.requireNonNull(identifier, "Identifier must not be null");
+        Objects.requireNonNull(identifier, MetadataUtils.IDENTIFIER_MUST_NOT_BE_NULL_MSG);
         if (exactSize < 0) {
             throw new IllegalArgumentException("Exact size cannot be negative");
         }
@@ -238,7 +251,7 @@ public abstract class CollectionValidationMetadata extends ValidationMetadata {
     }
 
     public static SizeRange sizeRange(ValidationIdentifier identifier, int minSize, int maxSize, int actualSize) {
-        Objects.requireNonNull(identifier, "Identifier must not be null");
+        Objects.requireNonNull(identifier, MetadataUtils.IDENTIFIER_MUST_NOT_BE_NULL_MSG);
         if (minSize < 0) {
             throw new IllegalArgumentException("Minimum size cannot be negative");
         }
@@ -252,9 +265,9 @@ public abstract class CollectionValidationMetadata extends ValidationMetadata {
     }
 
     public static <E> AllMatch<E> allMatch(ValidationIdentifier identifier, Predicate<E> condition, String description) {
-        Objects.requireNonNull(identifier, "Identifier must not be null");
-        Objects.requireNonNull(condition, "Condition predicate must not be null");
-        Objects.requireNonNull(description, "Condition description must not be null");
+        Objects.requireNonNull(identifier, MetadataUtils.IDENTIFIER_MUST_NOT_BE_NULL_MSG);
+        Objects.requireNonNull(condition, MetadataUtils.IDENTIFIER_MUST_NOT_BE_NULL_MSG);
+        Objects.requireNonNull(description, MetadataUtils.CONDITION_DESCRIPTION_MUST_NOT_BE_NULL_MSG);
         if (description.isBlank()) {
             throw new IllegalArgumentException("Condition description must not be blank");
         }
@@ -262,9 +275,9 @@ public abstract class CollectionValidationMetadata extends ValidationMetadata {
     }
 
     public static <E> AnyMatch<E> anyMatch(ValidationIdentifier identifier, Predicate<E> condition, String description) {
-        Objects.requireNonNull(identifier, "Identifier must not be null");
-        Objects.requireNonNull(condition, "Condition predicate must not be null");
-        Objects.requireNonNull(description, "Condition description must not be null");
+        Objects.requireNonNull(identifier, MetadataUtils.IDENTIFIER_MUST_NOT_BE_NULL_MSG);
+        Objects.requireNonNull(condition, MetadataUtils.IDENTIFIER_MUST_NOT_BE_NULL_MSG);
+        Objects.requireNonNull(description, MetadataUtils.CONDITION_DESCRIPTION_MUST_NOT_BE_NULL_MSG);
         if (description.isBlank()) {
             throw new IllegalArgumentException("Condition description must not be blank");
         }
@@ -272,9 +285,9 @@ public abstract class CollectionValidationMetadata extends ValidationMetadata {
     }
 
     public static <E> NoneMatch<E> noneMatch(ValidationIdentifier identifier, Predicate<E> condition, String description) {
-        Objects.requireNonNull(identifier, "Identifier must not be null");
-        Objects.requireNonNull(condition, "Condition predicate must not be null");
-        Objects.requireNonNull(description, "Condition description must not be null");
+        Objects.requireNonNull(identifier, MetadataUtils.IDENTIFIER_MUST_NOT_BE_NULL_MSG);
+        Objects.requireNonNull(condition, MetadataUtils.IDENTIFIER_MUST_NOT_BE_NULL_MSG);
+        Objects.requireNonNull(description, MetadataUtils.CONDITION_DESCRIPTION_MUST_NOT_BE_NULL_MSG);
         if (description.isBlank()) {
             throw new IllegalArgumentException("Condition description must not be blank");
         }
@@ -282,23 +295,23 @@ public abstract class CollectionValidationMetadata extends ValidationMetadata {
     }
 
     public static NoDuplicates noDuplicates(ValidationIdentifier identifier) {
-        Objects.requireNonNull(identifier, "Identifier must not be null");
+        Objects.requireNonNull(identifier, MetadataUtils.IDENTIFIER_MUST_NOT_BE_NULL_MSG);
         return new NoDuplicates(identifier);
     }
 
     public static <E> Contains<E> contains(ValidationIdentifier identifier, E element) {
-        Objects.requireNonNull(identifier, "Identifier must not be null");
+        Objects.requireNonNull(identifier, MetadataUtils.IDENTIFIER_MUST_NOT_BE_NULL_MSG);
         return new Contains<>(identifier, element);
     }
 
     public static <E> DoesNotContain<E> doesNotContain(ValidationIdentifier identifier, E element) {
-        Objects.requireNonNull(identifier, "Identifier must not be null");
+        Objects.requireNonNull(identifier, MetadataUtils.IDENTIFIER_MUST_NOT_BE_NULL_MSG);
         Objects.requireNonNull(element, "Element must not be null");
         return new DoesNotContain<>(identifier, element);
     }
 
     public static <E> ContainsAll<E> containsAll(ValidationIdentifier identifier, Collection<E> elements) {
-        Objects.requireNonNull(identifier, "Identifier must not be null");
+        Objects.requireNonNull(identifier, MetadataUtils.IDENTIFIER_MUST_NOT_BE_NULL_MSG);
         Objects.requireNonNull(elements, "Elements collection must not be null");
         if (elements.isEmpty()) {
             throw new IllegalArgumentException("Elements collection must not be empty");
@@ -307,7 +320,7 @@ public abstract class CollectionValidationMetadata extends ValidationMetadata {
     }
 
     public static <E> ContainsNone<E> containsNone(ValidationIdentifier identifier, Collection<E> elements) {
-        Objects.requireNonNull(identifier, "Identifier must not be null");
+        Objects.requireNonNull(identifier, MetadataUtils.IDENTIFIER_MUST_NOT_BE_NULL_MSG);
         Objects.requireNonNull(elements, "Elements collection must not be null");
         if (elements.isEmpty()) {
             throw new IllegalArgumentException("Elements collection must not be empty");
