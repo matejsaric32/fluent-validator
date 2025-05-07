@@ -17,46 +17,46 @@ public final class CommonValidationRules {
 
     // Pure validation functions
     private static class ValidationFunctions {
-        static boolean isNull(Object value) {
+        static boolean isNull(final Object value) {
             return value == null;
         }
 
-        static boolean isNotNull(Object value) {
+        static boolean isNotNull(final Object value) {
             return value != null;
         }
 
-        static <T> boolean isEqual(T value, T target) {
+        static <T> boolean isEqual(final T value, final T target) {
             return value != null && value.equals(target);
         }
 
-        static <T> boolean isNotEqual(T value, T target) {
+        static <T> boolean isNotEqual(final T value, final T target) {
             return value != null && !value.equals(target);
         }
 
-        static <T> boolean satisfiesCondition(T value, Predicate<T> predicate) {
+        static <T> boolean satisfiesCondition(final T value, final Predicate<T> predicate) {
             return value != null && predicate.test(value);
         }
 
-        static boolean isInstanceOf(Object value, Class<?> clazz) {
+        static boolean isInstanceOf(final Object value, final Class<?> clazz) {
             return value != null && clazz.isInstance(value);
         }
 
-        static boolean isNotInstanceOf(Object value, Class<?> clazz) {
+        static boolean isNotInstanceOf(final Object value, final Class<?> clazz) {
             return value != null && !clazz.isInstance(value);
         }
 
-        static boolean isSameObject(Object value, Object target) {
+        static boolean isSameObject(final Object value, final Object target) {
             return value != null && value == target;
         }
 
-        static boolean isNotSameObject(Object value, Object target) {
+        static boolean isNotSameObject(final Object value, final Object target) {
             return value != null && value != target;
         }
     }
 
     private static <T> ValidationRule<T> createRule(
-            Predicate<T> validationFunction,
-            Function<ValidationIdentifier, ValidationMetadata> metadataFactory) {
+            final Predicate<T> validationFunction,
+            final Function<ValidationIdentifier, ValidationMetadata> metadataFactory) {
 
         return (value, result, identifier) -> {
             if (!validationFunction.test(value)) {
@@ -68,8 +68,8 @@ public final class CommonValidationRules {
     }
 
     private static <T> ValidationRule<T> createSkipNullRule(
-            Predicate<T> validationFunction,
-            Function<ValidationIdentifier, ValidationMetadata> metadataFactory) {
+            final Predicate<T> validationFunction,
+            final Function<ValidationIdentifier, ValidationMetadata> metadataFactory) {
 
         return (value, result, identifier) -> {
             if (value == null) {
