@@ -2,6 +2,7 @@ package com.fluentval.validator.metadata;
 
 import com.fluentval.validator.ValidationIdentifier;
 import com.fluentval.validator.message.MessageParameter;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 
 import java.util.Objects;
@@ -25,45 +26,49 @@ public abstract class StringValidationMetadata extends ValidationMetadata {
     }
 
     @Getter
+    @EqualsAndHashCode(callSuper = true)
     public static final class MaxLength extends StringValidationMetadata {
-        private final int maxLength;
+        private final int maximumLength;
 
-        private MaxLength(ValidationIdentifier identifier, int maxLength) {
+        private MaxLength(ValidationIdentifier identifier, int maximumLength) {
             super(identifier, DefaultValidationCode.MAX_LENGTH);
-            this.maxLength = maxLength;
+            this.maximumLength = maximumLength;
 
             // Add message parameters
-            addMessageParameter(MessageParameter.MAX_LENGTH, String.valueOf(maxLength));
+            addMessageParameter(MessageParameter.MAX_LENGTH, String.valueOf(maximumLength));
         }
     }
 
     @Getter
+    @EqualsAndHashCode(callSuper = true)
     public static final class MinLength extends StringValidationMetadata {
-        private final int minLength;
+        private final int minimumLength;
 
-        private MinLength(ValidationIdentifier identifier, int minLength) {
+        private MinLength(ValidationIdentifier identifier, int minimumLength) {
             super(identifier, DefaultValidationCode.MIN_LENGTH);
-            this.minLength = minLength;
+            this.minimumLength = minimumLength;
 
             // Add message parameters
-            addMessageParameter(MessageParameter.MIN_LENGTH, String.valueOf(minLength));
+            addMessageParameter(MessageParameter.MIN_LENGTH, String.valueOf(minimumLength));
         }
     }
 
     @Getter
+    @EqualsAndHashCode(callSuper = true)
     public static final class ExactLength extends StringValidationMetadata {
-        private final int exactLength;
+        private final int requiredSize;
 
-        private ExactLength(ValidationIdentifier identifier, int exactLength) {
+        private ExactLength(ValidationIdentifier identifier, int requiredSize) {
             super(identifier, DefaultValidationCode.EXACT_LENGTH);
-            this.exactLength = exactLength;
+            this.requiredSize = requiredSize;
 
             // Add message parameters
-            addMessageParameter(MessageParameter.EXACT_LENGTH, String.valueOf(exactLength));
+            addMessageParameter(MessageParameter.EXACT_LENGTH, String.valueOf(requiredSize));
         }
     }
 
     @Getter
+    @EqualsAndHashCode(callSuper = true)
     public static final class Matches extends StringValidationMetadata {
         private final Pattern pattern;
 
@@ -77,6 +82,7 @@ public abstract class StringValidationMetadata extends ValidationMetadata {
     }
 
     @Getter
+    @EqualsAndHashCode(callSuper = true)
     public static final class OneOf extends StringValidationMetadata {
         private final String[] allowedValues;
 
@@ -94,6 +100,7 @@ public abstract class StringValidationMetadata extends ValidationMetadata {
     }
 
     @Getter
+    @EqualsAndHashCode(callSuper = true)
     public static final class OneOfIgnoreCase extends StringValidationMetadata {
         private final String[] allowedValues;
 
@@ -111,6 +118,7 @@ public abstract class StringValidationMetadata extends ValidationMetadata {
     }
 
     @Getter
+    @EqualsAndHashCode(callSuper = true)
     public static final class StartsWith extends StringValidationMetadata {
         private final String prefix;
 
@@ -124,6 +132,7 @@ public abstract class StringValidationMetadata extends ValidationMetadata {
     }
 
     @Getter
+    @EqualsAndHashCode(callSuper = true)
     public static final class EndsWith extends StringValidationMetadata {
         private final String suffix;
 
@@ -137,6 +146,7 @@ public abstract class StringValidationMetadata extends ValidationMetadata {
     }
 
     @Getter
+    @EqualsAndHashCode(callSuper = true)
     public static final class Contains extends StringValidationMetadata {
         private final String substring;
 
@@ -150,6 +160,7 @@ public abstract class StringValidationMetadata extends ValidationMetadata {
     }
 
     @Getter
+    @EqualsAndHashCode(callSuper = true)
     public static final class Numeric extends StringValidationMetadata {
         private Numeric(ValidationIdentifier identifier) {
             super(identifier, DefaultValidationCode.NUMERIC);
@@ -158,6 +169,7 @@ public abstract class StringValidationMetadata extends ValidationMetadata {
     }
 
     @Getter
+    @EqualsAndHashCode(callSuper = true)
     public static final class Alphanumeric extends StringValidationMetadata {
         private Alphanumeric(ValidationIdentifier identifier) {
             super(identifier, DefaultValidationCode.ALPHANUMERIC);
@@ -166,6 +178,7 @@ public abstract class StringValidationMetadata extends ValidationMetadata {
     }
 
     @Getter
+    @EqualsAndHashCode(callSuper = true)
     public static final class Uppercase extends StringValidationMetadata {
         private Uppercase(ValidationIdentifier identifier) {
             super(identifier, DefaultValidationCode.UPPERCASE);
@@ -174,6 +187,7 @@ public abstract class StringValidationMetadata extends ValidationMetadata {
     }
 
     @Getter
+    @EqualsAndHashCode(callSuper = true)
     public static final class Lowercase extends StringValidationMetadata {
         private Lowercase(ValidationIdentifier identifier) {
             super(identifier, DefaultValidationCode.LOWERCASE);
@@ -182,6 +196,7 @@ public abstract class StringValidationMetadata extends ValidationMetadata {
     }
 
     @Getter
+    @EqualsAndHashCode(callSuper = true)
     public static final class NoWhitespace extends StringValidationMetadata {
         private NoWhitespace(ValidationIdentifier identifier) {
             super(identifier, DefaultValidationCode.NO_WHITESPACE);
@@ -190,6 +205,7 @@ public abstract class StringValidationMetadata extends ValidationMetadata {
     }
 
     @Getter
+    @EqualsAndHashCode(callSuper = true)
     public static final class NoLeadingWhitespace extends StringValidationMetadata {
         private NoLeadingWhitespace(ValidationIdentifier identifier) {
             super(identifier, DefaultValidationCode.NO_LEADING_WHITESPACE);
@@ -198,6 +214,7 @@ public abstract class StringValidationMetadata extends ValidationMetadata {
     }
 
     @Getter
+    @EqualsAndHashCode(callSuper = true)
     public static final class NoTrailingWhitespace extends StringValidationMetadata {
         private NoTrailingWhitespace(ValidationIdentifier identifier) {
             super(identifier, DefaultValidationCode.NO_TRAILING_WHITESPACE);
@@ -206,6 +223,7 @@ public abstract class StringValidationMetadata extends ValidationMetadata {
     }
 
     @Getter
+    @EqualsAndHashCode(callSuper = true)
     public static final class NoConsecutiveWhitespace extends StringValidationMetadata {
         private NoConsecutiveWhitespace(ValidationIdentifier identifier) {
             super(identifier, DefaultValidationCode.NO_CONSECUTIVE_WHITESPACE);
@@ -214,6 +232,7 @@ public abstract class StringValidationMetadata extends ValidationMetadata {
     }
 
     @Getter
+    @EqualsAndHashCode(callSuper = true)
     public static final class Trimmed extends StringValidationMetadata {
         private Trimmed(ValidationIdentifier identifier) {
             super(identifier, DefaultValidationCode.TRIMMED);
@@ -222,6 +241,7 @@ public abstract class StringValidationMetadata extends ValidationMetadata {
     }
 
     @Getter
+    @EqualsAndHashCode(callSuper = true)
     public static final class ProperSpacing extends StringValidationMetadata {
         private ProperSpacing(ValidationIdentifier identifier) {
             super(identifier, DefaultValidationCode.PROPER_SPACING);
@@ -231,13 +251,13 @@ public abstract class StringValidationMetadata extends ValidationMetadata {
 
     // Factory methods
     public static NotBlank notBlank(ValidationIdentifier identifier) {
-        Objects.requireNonNull(identifier, "Identifier must not be null");
+        Objects.requireNonNull(identifier, MetadataUtils.IDENTIFIER_MUST_NOT_BE_NULL_MSG);
 
         return new NotBlank(identifier);
     }
 
     public static MaxLength maxLength(ValidationIdentifier identifier, int maxLength) {
-        Objects.requireNonNull(identifier, "Identifier must not be null");
+        Objects.requireNonNull(identifier, MetadataUtils.IDENTIFIER_MUST_NOT_BE_NULL_MSG);
         if (maxLength < 0) {
             throw new IllegalArgumentException("Maximum length cannot be negative");
         }
@@ -246,7 +266,7 @@ public abstract class StringValidationMetadata extends ValidationMetadata {
     }
 
     public static MinLength minLength(ValidationIdentifier identifier, int minLength) {
-        Objects.requireNonNull(identifier, "Identifier must not be null");
+        Objects.requireNonNull(identifier, MetadataUtils.IDENTIFIER_MUST_NOT_BE_NULL_MSG);
         if (minLength < 0) {
             throw new IllegalArgumentException("Minimum length cannot be negative");
         }
@@ -255,7 +275,7 @@ public abstract class StringValidationMetadata extends ValidationMetadata {
     }
 
     public static ExactLength exactLength(ValidationIdentifier identifier, int exactLength) {
-        Objects.requireNonNull(identifier, "Identifier must not be null");
+        Objects.requireNonNull(identifier, MetadataUtils.IDENTIFIER_MUST_NOT_BE_NULL_MSG);
         if (exactLength < 0) {
             throw new IllegalArgumentException("Exact length cannot be negative");
         }
@@ -264,14 +284,14 @@ public abstract class StringValidationMetadata extends ValidationMetadata {
     }
 
     public static Matches matches(ValidationIdentifier identifier, Pattern pattern) {
-        Objects.requireNonNull(identifier, "Identifier must not be null");
+        Objects.requireNonNull(identifier, MetadataUtils.IDENTIFIER_MUST_NOT_BE_NULL_MSG);
         Objects.requireNonNull(pattern, "Pattern must not be null");
 
         return new Matches(identifier, pattern);
     }
 
     public static Matches matches(ValidationIdentifier identifier, String pattern) {
-        Objects.requireNonNull(identifier, "Identifier must not be null");
+        Objects.requireNonNull(identifier, MetadataUtils.IDENTIFIER_MUST_NOT_BE_NULL_MSG);
         Objects.requireNonNull(pattern, "Pattern must not be null");
         if (pattern.isBlank()) {
             throw new IllegalArgumentException("Pattern must not be blank");
@@ -281,7 +301,7 @@ public abstract class StringValidationMetadata extends ValidationMetadata {
     }
 
     public static OneOf oneOf(ValidationIdentifier identifier, String... allowedValues) {
-        Objects.requireNonNull(identifier, "Identifier must not be null");
+        Objects.requireNonNull(identifier, MetadataUtils.IDENTIFIER_MUST_NOT_BE_NULL_MSG);
         Objects.requireNonNull(allowedValues, "Allowed values must not be null");
         if (allowedValues.length == 0) {
             throw new IllegalArgumentException("At least one allowed value is required");
@@ -291,7 +311,7 @@ public abstract class StringValidationMetadata extends ValidationMetadata {
     }
 
     public static OneOfIgnoreCase oneOfIgnoreCase(ValidationIdentifier identifier, String... allowedValues) {
-        Objects.requireNonNull(identifier, "Identifier must not be null");
+        Objects.requireNonNull(identifier, MetadataUtils.IDENTIFIER_MUST_NOT_BE_NULL_MSG);
         Objects.requireNonNull(allowedValues, "Allowed values must not be null");
         if (allowedValues.length == 0) {
             throw new IllegalArgumentException("At least one allowed value is required");
@@ -301,82 +321,82 @@ public abstract class StringValidationMetadata extends ValidationMetadata {
     }
 
     public static StartsWith startsWith(ValidationIdentifier identifier, String prefix) {
-        Objects.requireNonNull(identifier, "Identifier must not be null");
+        Objects.requireNonNull(identifier, MetadataUtils.IDENTIFIER_MUST_NOT_BE_NULL_MSG);
         Objects.requireNonNull(prefix, "Prefix must not be null");
 
         return new StartsWith(identifier, prefix);
     }
 
     public static EndsWith endsWith(ValidationIdentifier identifier, String suffix) {
-        Objects.requireNonNull(identifier, "Identifier must not be null");
+        Objects.requireNonNull(identifier, MetadataUtils.IDENTIFIER_MUST_NOT_BE_NULL_MSG);
         Objects.requireNonNull(suffix, "Suffix must not be null");
 
         return new EndsWith(identifier, suffix);
     }
 
     public static Contains contains(ValidationIdentifier identifier, String substring) {
-        Objects.requireNonNull(identifier, "Identifier must not be null");
+        Objects.requireNonNull(identifier, MetadataUtils.IDENTIFIER_MUST_NOT_BE_NULL_MSG);
         Objects.requireNonNull(substring, "Substring must not be null");
 
         return new Contains(identifier, substring);
     }
 
     public static Numeric numeric(ValidationIdentifier identifier) {
-        Objects.requireNonNull(identifier, "Identifier must not be null");
+        Objects.requireNonNull(identifier, MetadataUtils.IDENTIFIER_MUST_NOT_BE_NULL_MSG);
 
         return new Numeric(identifier);
     }
 
     public static Alphanumeric alphanumeric(ValidationIdentifier identifier) {
-        Objects.requireNonNull(identifier, "Identifier must not be null");
+        Objects.requireNonNull(identifier, MetadataUtils.IDENTIFIER_MUST_NOT_BE_NULL_MSG);
 
         return new Alphanumeric(identifier);
     }
 
     public static Uppercase uppercase(ValidationIdentifier identifier) {
-        Objects.requireNonNull(identifier, "Identifier must not be null");
+        Objects.requireNonNull(identifier, MetadataUtils.IDENTIFIER_MUST_NOT_BE_NULL_MSG);
 
         return new Uppercase(identifier);
     }
 
     public static Lowercase lowercase(ValidationIdentifier identifier) {
-        Objects.requireNonNull(identifier, "Identifier must not be null");
+        Objects.requireNonNull(identifier, MetadataUtils.IDENTIFIER_MUST_NOT_BE_NULL_MSG);
 
         return new Lowercase(identifier);
     }
 
     public static NoWhitespace noWhitespace(ValidationIdentifier identifier) {
-        Objects.requireNonNull(identifier, "Identifier must not be null");
+        Objects.requireNonNull(identifier, MetadataUtils.IDENTIFIER_MUST_NOT_BE_NULL_MSG);
 
         return new NoWhitespace(identifier);
     }
 
     public static NoLeadingWhitespace noLeadingWhitespace(ValidationIdentifier identifier) {
-        Objects.requireNonNull(identifier, "Identifier must not be null");
+        Objects.requireNonNull(identifier, MetadataUtils.IDENTIFIER_MUST_NOT_BE_NULL_MSG);
 
         return new NoLeadingWhitespace(identifier);
     }
 
     public static NoTrailingWhitespace noTrailingWhitespace(ValidationIdentifier identifier) {
-        Objects.requireNonNull(identifier, "Identifier must not be null");
+        Objects.requireNonNull(identifier, MetadataUtils.IDENTIFIER_MUST_NOT_BE_NULL_MSG);
 
         return new NoTrailingWhitespace(identifier);
     }
 
     public static NoConsecutiveWhitespace noConsecutiveWhitespace(ValidationIdentifier identifier) {
-        Objects.requireNonNull(identifier, "Identifier must not be null");
+        Objects.requireNonNull(identifier, MetadataUtils.IDENTIFIER_MUST_NOT_BE_NULL_MSG);
 
         return new NoConsecutiveWhitespace(identifier);
     }
 
     public static Trimmed trimmed(ValidationIdentifier identifier) {
-        Objects.requireNonNull(identifier, "Identifier must not be null");
+        Objects.requireNonNull(identifier, MetadataUtils.IDENTIFIER_MUST_NOT_BE_NULL_MSG);
 
         return new Trimmed(identifier);
     }
 
     public static ProperSpacing properSpacing(ValidationIdentifier identifier) {
-        Objects.requireNonNull(identifier, "Identifier must not be null");
+        Objects.requireNonNull(identifier, MetadataUtils.IDENTIFIER_MUST_NOT_BE_NULL_MSG);
 
         return new ProperSpacing(identifier);
     }
