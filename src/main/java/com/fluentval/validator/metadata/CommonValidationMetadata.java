@@ -2,6 +2,7 @@ package com.fluentval.validator.metadata;
 
 import com.fluentval.validator.ValidationIdentifier;
 import com.fluentval.validator.message.MessageParameter;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 
 import java.util.Objects;
@@ -37,10 +38,11 @@ public abstract class CommonValidationMetadata extends ValidationMetadata {
     }
 
     @Getter
-    public static final class Equal<T> extends CommonValidationMetadata {
+    @EqualsAndHashCode(callSuper = true)
+    public static final class IsEqual<T> extends CommonValidationMetadata {
         private final T targetObject;
 
-        private Equal(ValidationIdentifier identifier, T targetObject) {
+        private IsEqual(ValidationIdentifier identifier, T targetObject) {
             super(identifier, DefaultValidationCode.IS_EQUAL);
             this.targetObject = targetObject;
 
@@ -50,6 +52,7 @@ public abstract class CommonValidationMetadata extends ValidationMetadata {
     }
 
     @Getter
+    @EqualsAndHashCode(callSuper = true)
     public static final class NotEqual<T> extends CommonValidationMetadata {
         private final T targetObject;
 
@@ -63,6 +66,7 @@ public abstract class CommonValidationMetadata extends ValidationMetadata {
     }
 
     @Getter
+    @EqualsAndHashCode(callSuper = true)
     public static final class Satisfies<T> extends CommonValidationMetadata {
         private final Predicate<T> predicate;
         private final String predicateDescription;
@@ -78,6 +82,7 @@ public abstract class CommonValidationMetadata extends ValidationMetadata {
     }
 
     @Getter
+    @EqualsAndHashCode(callSuper = true)
     public static final class InstanceOf extends CommonValidationMetadata {
         private final Class<?> targetClass;
 
@@ -91,6 +96,7 @@ public abstract class CommonValidationMetadata extends ValidationMetadata {
     }
 
     @Getter
+    @EqualsAndHashCode(callSuper = true)
     public static final class NotInstanceOf extends CommonValidationMetadata {
         private final Class<?> targetClass;
 
@@ -104,6 +110,7 @@ public abstract class CommonValidationMetadata extends ValidationMetadata {
     }
 
     @Getter
+    @EqualsAndHashCode(callSuper = true)
     public static final class SameAs<T> extends CommonValidationMetadata {
         private final T targetObject;
 
@@ -117,6 +124,7 @@ public abstract class CommonValidationMetadata extends ValidationMetadata {
     }
 
     @Getter
+    @EqualsAndHashCode(callSuper = true)
     public static final class NotSameAs<T> extends CommonValidationMetadata {
         private final T targetObject;
 
@@ -131,29 +139,29 @@ public abstract class CommonValidationMetadata extends ValidationMetadata {
 
     // Factory methods
     public static NotNull notNull(ValidationIdentifier identifier) {
-        Objects.requireNonNull(identifier, "Identifier cannot be null");
+        Objects.requireNonNull(identifier, MetadataUtils.IDENTIFIER_MUST_NOT_BE_NULL_MSG);
         return new NotNull(identifier);
     }
 
     public static MustBeNull mustBeNull(ValidationIdentifier identifier) {
-        Objects.requireNonNull(identifier, "Identifier cannot be null");
+        Objects.requireNonNull(identifier, MetadataUtils.IDENTIFIER_MUST_NOT_BE_NULL_MSG);
         return new MustBeNull(identifier);
     }
 
-    public static <T> Equal<T> equal(ValidationIdentifier identifier, T value) {
-        Objects.requireNonNull(identifier, "Identifier cannot be null");
-        return new Equal<>(identifier, value);
+    public static <T> IsEqual<T> isEqual(ValidationIdentifier identifier, T value) {
+        Objects.requireNonNull(identifier, MetadataUtils.IDENTIFIER_MUST_NOT_BE_NULL_MSG);
+        return new IsEqual<>(identifier, value);
     }
 
     public static <T> NotEqual<T> notEqual(ValidationIdentifier identifier, T value) {
-        Objects.requireNonNull(identifier, "Identifier cannot be null");
+        Objects.requireNonNull(identifier, MetadataUtils.IDENTIFIER_MUST_NOT_BE_NULL_MSG);
         return new NotEqual<>(identifier, value);
     }
 
     public static <T> Satisfies<T> satisfies(ValidationIdentifier identifier,
                                              Predicate<T> predicate,
                                              String predicateDescription) {
-        Objects.requireNonNull(identifier, "Identifier cannot be null");
+        Objects.requireNonNull(identifier, MetadataUtils.IDENTIFIER_MUST_NOT_BE_NULL_MSG);
         Objects.requireNonNull(predicate, "Predicate cannot be null");
         Objects.requireNonNull(predicateDescription, "Predicate description cannot be null");
 
@@ -165,24 +173,24 @@ public abstract class CommonValidationMetadata extends ValidationMetadata {
     }
 
     public static InstanceOf instanceOf(ValidationIdentifier identifier, Class<?> targetClass) {
-        Objects.requireNonNull(identifier, "Identifier cannot be null");
+        Objects.requireNonNull(identifier, MetadataUtils.IDENTIFIER_MUST_NOT_BE_NULL_MSG);
         Objects.requireNonNull(targetClass, "Target class cannot be null");
         return new InstanceOf(identifier, targetClass);
     }
 
     public static NotInstanceOf notInstanceOf(ValidationIdentifier identifier, Class<?> targetClass) {
-        Objects.requireNonNull(identifier, "Identifier cannot be null");
+        Objects.requireNonNull(identifier, MetadataUtils.IDENTIFIER_MUST_NOT_BE_NULL_MSG);
         Objects.requireNonNull(targetClass, "Target class cannot be null");
         return new NotInstanceOf(identifier, targetClass);
     }
 
     public static <T> SameAs<T> sameAs(ValidationIdentifier identifier, T reference) {
-        Objects.requireNonNull(identifier, "Identifier cannot be null");
+        Objects.requireNonNull(identifier, MetadataUtils.IDENTIFIER_MUST_NOT_BE_NULL_MSG);
         return new SameAs<>(identifier, reference);
     }
 
     public static <T> NotSameAs<T> notSameAs(ValidationIdentifier identifier, T reference) {
-        Objects.requireNonNull(identifier, "Identifier cannot be null");
+        Objects.requireNonNull(identifier, MetadataUtils.IDENTIFIER_MUST_NOT_BE_NULL_MSG);
         return new NotSameAs<>(identifier, reference);
     }
 }

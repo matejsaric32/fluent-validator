@@ -1,12 +1,8 @@
 package com.fluentval.validator.rule;
 
-import com.fluentval.validator.ValidationIdentifier;
-import com.fluentval.validator.ValidationResult;
 import com.fluentval.validator.ValidationRule;
 import com.fluentval.validator.metadata.CommonValidationMetadata;
-import com.fluentval.validator.metadata.ValidationMetadata;
 
-import java.util.function.Function;
 import java.util.function.Predicate;
 
 import static com.fluentval.validator.rule.ValidationRuleUtils.createRule;
@@ -79,7 +75,7 @@ public final class CommonValidationRules {
 
         return createSkipNullRule(
                 value -> ValidationFunctions.isEqual(value, object),
-                identifier -> CommonValidationMetadata.equal(identifier, object)
+                identifier -> CommonValidationMetadata.isEqual(identifier, object)
         );
     }
 
