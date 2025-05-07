@@ -2,6 +2,7 @@ package com.fluentval.validator.metadata;
 
 import com.fluentval.validator.ValidationIdentifier;
 import com.fluentval.validator.message.MessageParameter;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 
 import java.util.Objects;
@@ -17,32 +18,35 @@ public abstract class NumberValidationMetadata extends ValidationMetadata {
     }
 
     @Getter
+    @EqualsAndHashCode(callSuper = true)
     public static final class Min<T extends Number & Comparable<T>> extends NumberValidationMetadata {
-        private final T min;
+        private final T minimum;
 
-        private Min(ValidationIdentifier identifier, T min) {
+        private Min(ValidationIdentifier identifier, T minimum) {
             super(identifier, DefaultValidationCode.MIN);
-            this.min = min;
+            this.minimum = minimum;
 
             // Add message parameters
-            addMessageParameter(MessageParameter.MIN, min.toString());
+            addMessageParameter(MessageParameter.MIN, minimum.toString());
         }
     }
 
     @Getter
+    @EqualsAndHashCode(callSuper = true)
     public static final class Max<T extends Number & Comparable<T>> extends NumberValidationMetadata {
-        private final T max;
+        private final T maximum;
 
-        private Max(ValidationIdentifier identifier, T max) {
+        private Max(ValidationIdentifier identifier, T maximum) {
             super(identifier, DefaultValidationCode.MAX);
-            this.max = max;
+            this.maximum = maximum;
 
             // Add message parameters
-            addMessageParameter(MessageParameter.MAX, max.toString());
+            addMessageParameter(MessageParameter.MAX, maximum.toString());
         }
     }
 
     @Getter
+    @EqualsAndHashCode(callSuper = true)
     public static final class Range<T extends Number & Comparable<T>> extends NumberValidationMetadata {
         private final T min;
         private final T max;
@@ -81,21 +85,21 @@ public abstract class NumberValidationMetadata extends ValidationMetadata {
 
     // Factory methods
     public static <T extends Number & Comparable<T>> Min<T> min(ValidationIdentifier identifier, T min) {
-        Objects.requireNonNull(identifier, "Identifier must not be null");
+        Objects.requireNonNull(identifier, MetadataUtils.IDENTIFIER_MUST_NOT_BE_NULL_MSG);
         Objects.requireNonNull(min, "Minimum value must not be null");
 
         return new Min<>(identifier, min);
     }
 
     public static <T extends Number & Comparable<T>> Max<T> max(ValidationIdentifier identifier, T max) {
-        Objects.requireNonNull(identifier, "Identifier must not be null");
+        Objects.requireNonNull(identifier, MetadataUtils.IDENTIFIER_MUST_NOT_BE_NULL_MSG);
         Objects.requireNonNull(max, "Maximum value must not be null");
 
         return new Max<>(identifier, max);
     }
 
     public static <T extends Number & Comparable<T>> Range<T> range(ValidationIdentifier identifier, T min, T max) {
-        Objects.requireNonNull(identifier, "Identifier must not be null");
+        Objects.requireNonNull(identifier, MetadataUtils.IDENTIFIER_MUST_NOT_BE_NULL_MSG);
         Objects.requireNonNull(min, "Minimum value must not be null");
         Objects.requireNonNull(max, "Maximum value must not be null");
 
@@ -107,19 +111,19 @@ public abstract class NumberValidationMetadata extends ValidationMetadata {
     }
 
     public static Positive positive(ValidationIdentifier identifier) {
-        Objects.requireNonNull(identifier, "Identifier must not be null");
+        Objects.requireNonNull(identifier, MetadataUtils.IDENTIFIER_MUST_NOT_BE_NULL_MSG);
 
         return new Positive(identifier);
     }
 
     public static Negative negative(ValidationIdentifier identifier) {
-        Objects.requireNonNull(identifier, "Identifier must not be null");
+        Objects.requireNonNull(identifier, MetadataUtils.IDENTIFIER_MUST_NOT_BE_NULL_MSG);
 
         return new Negative(identifier);
     }
 
     public static NotZero notZero(ValidationIdentifier identifier) {
-        Objects.requireNonNull(identifier, "Identifier must not be null");
+        Objects.requireNonNull(identifier, MetadataUtils.IDENTIFIER_MUST_NOT_BE_NULL_MSG);
 
         return new NotZero(identifier);
     }
