@@ -1,6 +1,5 @@
 package com.fluentval.validator;
 
-import com.fluentval.validator.message.ValidationMessageRegistry;
 import com.fluentval.validator.metadata.ValidationMetadata;
 import lombok.Getter;
 import lombok.ToString;
@@ -10,7 +9,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
-import java.util.stream.Collectors;
 
 public class ValidationResult {
     private final List<Failure> failures = new ArrayList<>();

@@ -5,7 +5,6 @@ import lombok.Getter;
 
 import java.util.List;
 import java.util.function.Consumer;
-import java.util.function.Function;
 import java.util.function.Predicate;
 
 @FunctionalInterface
@@ -91,6 +90,7 @@ public interface ValidationRule<T> {
     @Deprecated(since = "This method is for debugging only")
     default ValidationRule<T> debug(final String name) {
         return (value, result, identifier) -> {
+
             System.out.println(
                 "DEBUG [" + name + "] Before validation for identifier: " + identifier.value());
             System.out.println("Value: " + (value == null ? "null" : value.toString()));
@@ -131,16 +131,12 @@ public interface ValidationRule<T> {
         };
     }
 
-    // Add a method to enrich validation metadata
     default ValidationRule<T> withMetadata(Consumer<ValidationMetadata> enricher) {
         return (value, result, identifier) -> {
-            // Keep track of failures before validation
             int initialFailureCount = result.getFailures().size();
 
-            // Execute the validation
             validate(value, result, identifier);
 
-            // Enrich any new failures
             for (int i = initialFailureCount; i < result.getFailures().size(); i++) {
                 result.getFailures().get(i).withEnrichedMetadata(enricher);
             }
