@@ -46,10 +46,6 @@ public class ValidationResult {
         return copy;
     }
 
-    public void merge(final ValidationResult other) {
-        other.getFailures().forEach(this::addFailure);
-    }
-
     public static ValidationResult success() {
         return new ValidationResult(); // Empty result means success
     }

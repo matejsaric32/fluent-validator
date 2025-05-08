@@ -11,7 +11,7 @@ public class Validator<T> {
     private final ValidationResult result;
     private boolean shortCircuit = false;
 
-    public Validator(T target) {
+    protected Validator(T target) {
         this(target, new ValidationResult(), false);
     }
 
@@ -25,11 +25,13 @@ public class Validator<T> {
         return new Validator<>(target);
     }
 
-    public static <T> Validator<T> withExistingResult(final T target, final ValidationResult existingResult) {
-        if (existingResult == null) {
+    public static <T> Validator<T> withExistingResult(final T target, final ValidationResult parentResult) {
+        if (parentResult == null) {
             throw new IllegalArgumentException("ValidationResult cannot be null");
         }
-        return new Validator<>(target, existingResult, false);
+
+        ScopedValidationResult childResult = new ScopedValidationResult(parentResult);
+        return new Validator<>(target, childResult, false);
     }
 
     public <V> PropertyValidator<T, V> property(final ValidationIdentifier identifier, final Function<T, V> extractor) {
@@ -92,8 +94,10 @@ public class Validator<T> {
         return shortCircuitIf(ValidationResult::hasErrors);
     }
 
-    public Validator<T> merge(final ValidationResult otherResult) {
-        result.merge(otherResult);
+    public Validator<T> mergeScopedFailures(Validator<T> otherValidator) {
+        if (otherValidator.getResult() instanceof ScopedValidationResult scopedResult) {
+            scopedResult.getScopedFailures().forEach(this.result::addFailure);
+        }
         return this;
     }
 
