@@ -1,6 +1,7 @@
 package com.fluentval.validator.rule;
 
 import com.fluentval.validator.ValidationRule;
+import com.fluentval.validator.metadata.MetadataUtils;
 import com.fluentval.validator.metadata.TimeValidationMetadata;
 
 import java.time.LocalTime;
@@ -122,6 +123,16 @@ public final class TimeValidationRules {
             ZoneId valueZone = getZoneId(value);
             return valueZone != null && valueZone.equals(zoneId);
         }
+
+        private static ZoneId getZoneId(final Temporal value) {
+            if (value instanceof ZonedDateTime zonedDateTime) {
+                return zonedDateTime.getZone();
+            } else if (value instanceof OffsetTime offsetTime) {
+                return ZoneId.ofOffset("", offsetTime.getOffset());
+            }
+
+            return null;
+        }
     }
 
     private static LocalTime getLocalTime(final Temporal value) {
@@ -134,16 +145,6 @@ public final class TimeValidationRules {
         }
 
         throw new IllegalArgumentException("Unsupported temporal type: " + value.getClass());
-    }
-
-    private static ZoneId getZoneId(final Temporal value) {
-        if (value instanceof ZonedDateTime zonedDateTime) {
-            return zonedDateTime.getZone();
-        } else if (value instanceof OffsetTime offsetTime) {
-            return ZoneId.ofOffset("", offsetTime.getOffset());
-        }
-
-        return null;
     }
 
     public static <T extends Temporal & Comparable<? super T>> ValidationRule<T> inRange(final T min, final T max) {
@@ -164,7 +165,7 @@ public final class TimeValidationRules {
     }
 
     public static <T extends Temporal & Comparable<? super T>> ValidationRule<T> before(final T time) {
-        Objects.requireNonNull(time, "Reference time must not be null");
+        Objects.requireNonNull(time, MetadataUtils.REFERENCE_TIME_MUST_NOT_BE_NULL_MSG);
 
         return createSkipNullRule(
                 value -> ValidationFunctions.isBefore(value, time),
@@ -173,7 +174,7 @@ public final class TimeValidationRules {
     }
 
     public static <T extends Temporal & Comparable<? super T>> ValidationRule<T> after(final T time) {
-        Objects.requireNonNull(time, "Reference time must not be null");
+        Objects.requireNonNull(time, MetadataUtils.REFERENCE_TIME_MUST_NOT_BE_NULL_MSG);
 
         return createSkipNullRule(
                 value -> ValidationFunctions.isAfter(value, time),
@@ -182,7 +183,7 @@ public final class TimeValidationRules {
     }
 
     public static <T extends Temporal & Comparable<? super T>> ValidationRule<T> beforeOrEquals(final T time) {
-        Objects.requireNonNull(time, "Reference time must not be null");
+        Objects.requireNonNull(time, MetadataUtils.REFERENCE_TIME_MUST_NOT_BE_NULL_MSG);
 
         return createSkipNullRule(
                 value -> ValidationFunctions.isBeforeOrEquals(value, time),
@@ -191,7 +192,7 @@ public final class TimeValidationRules {
     }
 
     public static <T extends Temporal & Comparable<? super T>> ValidationRule<T> afterOrEquals(final T time) {
-        Objects.requireNonNull(time, "Reference time must not be null");
+        Objects.requireNonNull(time, MetadataUtils.REFERENCE_TIME_MUST_NOT_BE_NULL_MSG);
 
         return createSkipNullRule(
                 value -> ValidationFunctions.isAfterOrEquals(value, time),
@@ -199,8 +200,8 @@ public final class TimeValidationRules {
         );
     }
 
-    public static <T extends Temporal & Comparable<? super T>> ValidationRule<T> equals(final T time) {
-        Objects.requireNonNull(time, "Reference time must not be null");
+    public static <T extends Temporal & Comparable<? super T>> ValidationRule<T> isEquals(final T time) {
+        Objects.requireNonNull(time, MetadataUtils.REFERENCE_TIME_MUST_NOT_BE_NULL_MSG);
 
         return createSkipNullRule(
                 value -> ValidationFunctions.isEqual(value, time),
