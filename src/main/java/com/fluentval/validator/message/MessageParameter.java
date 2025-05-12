@@ -62,6 +62,9 @@ public enum MessageParameter {
     FORMATTED_MAX_TIME("maxTimeFormatted"), // Formatted maximum time
     FORMATTED_REFERENCE_TIME("referenceTimeFormatted"), // Formatted reference time
 
+    // Map Validations parameters
+    KEY("key"),
+
     // Enhanced validation metadata parameters
     SEVERITY("severity"),           // Validation severity (ERROR, WARNING, INFO)
     CATEGORY("category"),           // Domain/business category
