@@ -64,6 +64,7 @@ public enum MessageParameter {
 
     // Map Validations parameters
     KEY("key"),
+    KEYS("keys"),
 
     // Enhanced validation metadata parameters
     SEVERITY("severity"),           // Validation severity (ERROR, WARNING, INFO)
