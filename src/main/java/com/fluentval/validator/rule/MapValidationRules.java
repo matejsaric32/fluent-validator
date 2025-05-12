@@ -3,6 +3,7 @@ package com.fluentval.validator.rule;
 import com.fluentval.validator.ValidationResult;
 import com.fluentval.validator.ValidationRule;
 import com.fluentval.validator.metadata.MapValidationMetadata;
+import com.fluentval.validator.metadata.MetadataUtils;
 
 import java.util.Collection;
 import java.util.Map;
@@ -12,9 +13,9 @@ import java.util.function.Predicate;
 
 import static com.fluentval.validator.rule.ValidationRuleUtils.createSkipNullRule;
 
-public final class HashMapValidationRules {
+public final class MapValidationRules {
 
-    private HashMapValidationRules() {
+    private MapValidationRules() {
         // Utility class
     }
 
@@ -225,7 +226,7 @@ public final class HashMapValidationRules {
     }
 
     public static <K, V> ValidationRule<Map<K, V>> allKeysMatch(Predicate<K> condition, String conditionDescription) {
-        Objects.requireNonNull(condition, "Condition predicate cannot be null");
+        Objects.requireNonNull(condition, MetadataUtils.CONDITION_PREDICATE_MUST_NOT_BE_NULL_MSG);
 
         if (conditionDescription == null || conditionDescription.isBlank()) {
             throw new IllegalArgumentException("Condition description cannot be null or blank");
@@ -238,7 +239,7 @@ public final class HashMapValidationRules {
     }
 
     public static <K, V> ValidationRule<Map<K, V>> allValuesMatch(Predicate<V> condition, String conditionDescription) {
-        Objects.requireNonNull(condition, "Condition predicate cannot be null");
+        Objects.requireNonNull(condition, MetadataUtils.CONDITION_PREDICATE_MUST_NOT_BE_NULL_MSG);
 
         if (conditionDescription == null || conditionDescription.isBlank()) {
             throw new IllegalArgumentException("Condition description cannot be null or blank");
@@ -251,7 +252,7 @@ public final class HashMapValidationRules {
     }
 
     public static <K, V> ValidationRule<Map<K, V>> allEntriesMatch(BiPredicate<K, V> condition, String conditionDescription) {
-        Objects.requireNonNull(condition, "Condition predicate cannot be null");
+        Objects.requireNonNull(condition, MetadataUtils.CONDITION_PREDICATE_MUST_NOT_BE_NULL_MSG);
 
         if (conditionDescription == null || conditionDescription.isBlank()) {
             throw new IllegalArgumentException("Condition description cannot be null or blank");
@@ -264,7 +265,7 @@ public final class HashMapValidationRules {
     }
 
     public static <K, V> ValidationRule<Map<K, V>> anyKeyMatches(Predicate<K> condition, String conditionDescription) {
-        Objects.requireNonNull(condition, "Condition predicate cannot be null");
+        Objects.requireNonNull(condition, MetadataUtils.CONDITION_PREDICATE_MUST_NOT_BE_NULL_MSG);
 
         if (conditionDescription == null || conditionDescription.isBlank()) {
             throw new IllegalArgumentException("Condition description cannot be null or blank");
@@ -277,7 +278,7 @@ public final class HashMapValidationRules {
     }
 
     public static <K, V> ValidationRule<Map<K, V>> anyValueMatches(Predicate<V> condition, String conditionDescription) {
-        Objects.requireNonNull(condition, "Condition predicate cannot be null");
+        Objects.requireNonNull(condition, MetadataUtils.CONDITION_PREDICATE_MUST_NOT_BE_NULL_MSG);
 
         if (conditionDescription == null || conditionDescription.isBlank()) {
             throw new IllegalArgumentException("Condition description cannot be null or blank");
@@ -290,7 +291,7 @@ public final class HashMapValidationRules {
     }
 
     public static <K, V> ValidationRule<Map<K, V>> anyEntryMatches(BiPredicate<K, V> condition, String conditionDescription) {
-        Objects.requireNonNull(condition, "Condition predicate cannot be null");
+        Objects.requireNonNull(condition, MetadataUtils.CONDITION_PREDICATE_MUST_NOT_BE_NULL_MSG);
 
         if (conditionDescription == null || conditionDescription.isBlank()) {
             throw new IllegalArgumentException("Condition description cannot be null or blank");
@@ -303,7 +304,7 @@ public final class HashMapValidationRules {
     }
 
     public static <K, V> ValidationRule<Map<K, V>> noKeyMatches(Predicate<K> condition, String conditionDescription) {
-        Objects.requireNonNull(condition, "Condition predicate cannot be null");
+        Objects.requireNonNull(condition, MetadataUtils.CONDITION_PREDICATE_MUST_NOT_BE_NULL_MSG);
 
         if (conditionDescription == null || conditionDescription.isBlank()) {
             throw new IllegalArgumentException("Condition description cannot be null or blank");
@@ -316,7 +317,7 @@ public final class HashMapValidationRules {
     }
 
     public static <K, V> ValidationRule<Map<K, V>> noValueMatches(Predicate<V> condition, String conditionDescription) {
-        Objects.requireNonNull(condition, "Condition predicate cannot be null");
+        Objects.requireNonNull(condition, MetadataUtils.CONDITION_PREDICATE_MUST_NOT_BE_NULL_MSG);
 
         if (conditionDescription == null || conditionDescription.isBlank()) {
             throw new IllegalArgumentException("Condition description cannot be null or blank");
@@ -329,7 +330,7 @@ public final class HashMapValidationRules {
     }
 
     public static <K, V> ValidationRule<Map<K, V>> noEntryMatches(BiPredicate<K, V> condition, String conditionDescription) {
-        Objects.requireNonNull(condition, "Condition predicate cannot be null");
+        Objects.requireNonNull(condition, MetadataUtils.CONDITION_PREDICATE_MUST_NOT_BE_NULL_MSG);
 
         if (conditionDescription == null || conditionDescription.isBlank()) {
             throw new IllegalArgumentException("Condition description cannot be null or blank");
