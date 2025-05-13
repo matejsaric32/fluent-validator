@@ -94,7 +94,7 @@ public class Validator<T> {
         return shortCircuitIf(ValidationResult::hasErrors);
     }
 
-    public Validator<T> mergeScopedFailures(Validator<T> otherValidator) {
+    public Validator<T> mergeScopedFailures(Validator<?> otherValidator) {
         if (otherValidator.getResult() instanceof ScopedValidationResult scopedResult) {
             scopedResult.getScopedFailures().forEach(this.result::addFailure);
         }

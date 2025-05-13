@@ -51,6 +51,13 @@ public class PropertyValidator<T, V> {
         return this;
     }
 
+    public PropertyValidator<T, V> validateScoped(final ScopedValidationRule<V> rule) {
+        if (!shortCircuit && !parent.isShortCircuited()) {
+            rule.validate(value, parent);
+        }
+        return this;
+    }
+
     public PropertyValidator<T, V> peek(final Consumer<V> consumer) {
         if (!shortCircuit && !parent.isShortCircuited() && value != null) {
             consumer.accept(value);
