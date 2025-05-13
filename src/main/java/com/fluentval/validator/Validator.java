@@ -42,28 +42,6 @@ public class Validator<T> {
         return new PropertyValidator<>(this, identifier, target != null ? value : null);
     }
 
-    public Validator<T> validate(final ObjectValidationRule<T> rule) {
-        if (!shortCircuit) {
-            rule.validate(target, result);
-        }
-        return this;
-    }
-
-    public <V> Validator<T> validateAs(Function<T, V> converter, ObjectValidationRule<V> rule) {
-        if (!shortCircuit && target != null) {
-            V convertedTarget = converter.apply(target);
-            rule.validate(convertedTarget, result);
-        }
-        return this;
-    }
-
-    public Validator<T> validateWhen(final Predicate<T> condition, final ObjectValidationRule<T> rule) {
-        if (!shortCircuit && condition.test(target)) {
-            rule.validate(target, result);
-        }
-        return this;
-    }
-
     public <V> Validator<T> validateWithCircuitBreaker(final V value, final ValidationIdentifier identifier, final ValidationRule<V> rule) {
         ValidationResult tempResult = new ValidationResult();
         rule.validate(value, tempResult, identifier);
@@ -73,13 +51,6 @@ public class Validator<T> {
             shortCircuit = true;
         }
 
-        return this;
-    }
-
-    public Validator<T> validateIfNoErrorFor(final ValidationIdentifier identifier, final ObjectValidationRule<T> rule) {
-        if (!shortCircuit && !result.hasErrorForIdentifier(identifier)) {
-            rule.validate(target, result);
-        }
         return this;
     }
 
