@@ -6,7 +6,7 @@
 
     <groupId>com.fluentval</groupId>
     <artifactId>fluent-validator</artifactId>
-    <version>1.2.1</version>
+    <version>1.2.2</version>
 
     <name>Fluent Validator</name>
     <description>A fluent Java validation library</description>
