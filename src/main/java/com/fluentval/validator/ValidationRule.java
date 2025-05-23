@@ -1,6 +1,7 @@
 package com.fluentval.validator;
 
 import com.fluentval.validator.metadata.ValidationMetadata;
+import com.fluentval.validator.metadata.ValidationRuleBuilder;
 import lombok.Getter;
 
 import java.util.List;
@@ -143,20 +144,8 @@ public interface ValidationRule<T> {
         };
     }
 
-    default ValidationRule<T> withSeverity(ValidationMetadata.ValidationSeverity severity) {
-        return withMetadata(metadata -> metadata.setSeverity(severity));
-    }
-
-    default ValidationRule<T> withCategory(String category) {
-        return withMetadata(metadata -> metadata.setCategory(category));
-    }
-
-    default ValidationRule<T> withGroup(String group) {
-        return withMetadata(metadata -> metadata.setValidationGroup(group));
-    }
-
-    default ValidationRule<T> blocking(boolean blocking) {
-        return withMetadata(metadata -> metadata.setBlocking(blocking));
+    static <T> ValidationRuleBuilder<T> configure(ValidationRule<T> rule) {
+        return ValidationRuleBuilder.of(rule);
     }
 
     @Getter
