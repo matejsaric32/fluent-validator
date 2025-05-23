@@ -112,8 +112,8 @@ import java.util.function.Predicate;
  * }</pre>
  *
  * @param <T> the type of object being validated
- * @author Fluent Validator Team
- * @since 1.0.0
+ * @author Matej Šarić
+ * @since 1.2.3
  * @see PropertyValidator
  * @see ValidationResult
  * @see ValidationRule

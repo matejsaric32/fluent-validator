@@ -274,7 +274,7 @@ import java.util.List;
  * }</pre>
  *
  * @author Matej Šarić
- * @since 1.0.0
+ * @since 1.2.3
  * @see ValidationResult
  * @see Validator#withExistingResult(Object, ValidationResult)
  * @see ScopedValidationRule

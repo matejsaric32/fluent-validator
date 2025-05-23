@@ -177,8 +177,8 @@ package com.fluentval.validator;
  * }
  * }</pre>
  *
- * @author Fluent Validator Team
- * @since 1.0.0
+ * @author Matej Šarić
+ * @since 1.2.3
  * @see ValidationRule
  * @see ValidationResult
  * @see ValidationIdentifier

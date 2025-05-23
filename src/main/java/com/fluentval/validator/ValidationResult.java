@@ -202,8 +202,8 @@ import java.util.function.Consumer;
  * }
  * }</pre>
  *
- * @author Fluent Validator Team
- * @since 1.0.0
+ * @author Matej Šarić
+ * @since 1.2.3
  * @see ValidationIdentifier
  * @see ValidationMetadata
  * @see Validator

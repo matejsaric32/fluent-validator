@@ -292,8 +292,8 @@ package com.fluentval.validator;
  * }</pre>
  *
  * @param <T> the type of value this scoped rule can validate
- * @author Fluent Validator Team
- * @since 1.0.0
+ * @author Matej Šarić
+ * @since 1.2.3
  * @see ValidationRule
  * @see Validator
  * @see ValidationResult

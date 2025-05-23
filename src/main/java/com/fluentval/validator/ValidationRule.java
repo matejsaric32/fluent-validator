@@ -104,8 +104,8 @@ import java.util.function.Predicate;
  * }</pre>
  *
  * @param <T> the type of value this rule can validate
- * @author Fluent Validator Team
- * @since 1.0.0
+ * @author Matej Šarić
+ * @since 1.2.3
  * @see ValidationResult
  * @see ValidationIdentifier
  * @see ValidationMetadata

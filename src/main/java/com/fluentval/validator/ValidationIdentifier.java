@@ -212,8 +212,8 @@ import lombok.EqualsAndHashCode;
  * }
  * }</pre>
  *
- * @author Fluent Validator Team
- * @since 1.0.0
+ * @author Matej Šarić
+ * @since 1.2.3
  * @see ValidationResult
  * @see ValidationMetadata
  * @see Validator
