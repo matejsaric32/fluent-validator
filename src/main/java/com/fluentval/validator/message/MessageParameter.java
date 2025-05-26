@@ -1,5 +1,44 @@
 package com.fluentval.validator.message;
 
+import com.fluentval.validator.metadata.ValidationMetadata;
+
+/**
+ * Enumeration of standard message parameters used in validation error message templates.
+ * This enum provides a centralized catalog of all parameter keys that can be used for
+ * message template substitution, organized by validation domain and parameter purpose,
+ * enabling consistent and comprehensive error message generation across the validation framework.
+ *
+ * <p>MessageParameter serves as the foundation for error message parameterization,
+ * providing structured access to validation context information that can be embedded
+ * in localized error messages through template substitution mechanisms.</p>
+ *
+ * <p><strong>Parameter Organization:</strong></p>
+ * <ul>
+ * <li><strong>Common parameters</strong> - Universal parameters applicable to all validation types</li>
+ * <li><strong>String validation parameters</strong> - Text-specific parameters for length, pattern, and content validation</li>
+ * <li><strong>Number validation parameters</strong> - Numeric constraint parameters for boundaries and ranges</li>
+ * <li><strong>Date/Time validation parameters</strong> - Temporal constraint parameters for date and time validation</li>
+ * <li><strong>Collection validation parameters</strong> - Container-specific parameters for size and element validation</li>
+ * <li><strong>Object validation parameters</strong> - Type and identity validation parameters</li>
+ * <li><strong>Time validation parameters</strong> - Time-specific parameters for time-of-day constraints</li>
+ * <li><strong>Map validation parameters</strong> - Map-specific parameters for key-value validation</li>
+ * <li><strong>Enhanced metadata parameters</strong> - Advanced validation context and control parameters</li>
+ * <li><strong>Custom business parameters</strong> - Domain-specific parameters for business rule validation</li>
+ * </ul>
+ *
+ * <p><strong>Usage Pattern:</strong> These parameters are typically used in message templates
+ * with placeholder syntax (e.g., "Field '{field}' must be at least {minLength} characters")
+ * and are replaced with actual validation context values during error message generation.</p>
+ *
+ * <p><strong>Extensibility:</strong> While this enum provides comprehensive coverage of
+ * standard validation scenarios, custom validation rules can add additional parameters
+ * to message templates as needed for specific business requirements.</p>
+ *
+ * @author Matej Šarić
+ * @since 1.2.3
+ * @see ValidationMessageProvider
+ * @see ValidationMetadata
+ */
 public enum MessageParameter {
     // Common parameters
     FIELD("field"),                 // The field name/identifier being validated
