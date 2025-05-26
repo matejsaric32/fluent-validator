@@ -7,26 +7,121 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Default implementation of ValidationMessageProvider that provides comprehensive
+ * English-language error messages for all standard validation types in the FluentVal framework.
+ * This class serves as the primary message provider and includes built-in templates for
+ * common, string, number, collection, date-time, and specialized validation scenarios.
+ *
+ * <p>DefaultMessageProvider implements an efficient template compilation and caching system
+ * to optimize message generation performance, pre-parsing message templates into structured
+ * components for rapid parameter substitution during validation error reporting.</p>
+ *
+ * <p><strong>Key Features:</strong></p>
+ * <ul>
+ * <li><strong>Comprehensive Coverage</strong> - Built-in messages for all standard validation codes</li>
+ * <li><strong>Template Compilation</strong> - Pre-compiled templates for optimal performance</li>
+ * <li><strong>Parameter Substitution</strong> - Robust placeholder replacement with context values</li>
+ * <li><strong>Template Customization</strong> - Runtime template modification and extension</li>
+ * <li><strong>Fallback Handling</strong> - Graceful handling of unknown codes with default messages</li>
+ * <li><strong>Performance Optimization</strong> - Cached template parsing for repeated usage</li>
+ * </ul>
+ *
+ * <p><strong>Template Syntax:</strong> Message templates use curly brace syntax for placeholders
+ * (e.g., "Field '{field}' must be at least {minLength} characters long"). Placeholders are
+ * replaced with corresponding values from the parameters map during message generation.</p>
+ *
+ * <p><strong>Extensibility:</strong> While this provider includes comprehensive default messages,
+ * it can be extended or customized by modifying templates at runtime or by subclassing
+ * to provide domain-specific message handling.</p>
+ *
+ * @author Matej Šarić
+ * @since 1.2.3
+ * @see ValidationMessageProvider
+ * @see MessageParameter
+ * @see com.fluentval.validator.metadata.DefaultValidationCode
+ */
 public class DefaultMessageProvider implements ValidationMessageProvider {
+
+    /**
+     * Map storing message templates keyed by validation codes.
+     * This map contains the raw template strings with placeholder syntax
+     * that will be compiled into structured components for efficient processing.
+     */
     private final Map<String, String> messageTemplates = new HashMap<>();
+
+    /**
+     * Cache of compiled template parts for performance optimization.
+     * This map stores pre-parsed template structures to avoid repeated
+     * parsing overhead during message generation operations.
+     */
     private final Map<String, List<TemplatePart>> compiledTemplates = new HashMap<>();
 
+    /**
+     * Internal class representing a parsed component of a message template.
+     * Template parts can be either static text or dynamic placeholders that
+     * require parameter substitution during message generation.
+     */
     private static class TemplatePart {
-        enum Type { TEXT, PLACEHOLDER }
 
+        /**
+         * Enumeration of template part types for processing logic.
+         */
+        enum Type {
+            /** Static text that appears as-is in the final message */
+            TEXT,
+            /** Dynamic placeholder that gets replaced with parameter values */
+            PLACEHOLDER
+        }
+
+        /** The type of this template part (text or placeholder) */
         final Type type;
+
+        /** The content of this template part (text content or placeholder name) */
         final String value;
 
+        /**
+         * Creates a new template part with the specified type and content.
+         *
+         * @param type the type of template part (TEXT or PLACEHOLDER)
+         * @param value the content (static text or placeholder name)
+         */
         TemplatePart(Type type, String value) {
             this.type = type;
             this.value = value;
         }
     }
 
+    /**
+     * Constructs a new DefaultMessageProvider with all standard validation message templates.
+     *
+     * <p>This constructor initializes the provider with comprehensive English-language
+     * error messages for all validation codes defined in {@link com.fluentval.validator.metadata.DefaultValidationCode}.
+     * The initialization process loads templates for common, string, number, collection,
+     * date-time, and specialized validation scenarios.</p>
+     */
     public DefaultMessageProvider() {
         initializeDefaultMessages();
     }
 
+    /**
+     * Initializes the default message templates for all standard validation codes.
+     *
+     * <p>This method populates the messageTemplates map with comprehensive English-language
+     * error message templates covering all validation scenarios supported by the framework.
+     * Templates use placeholder syntax for dynamic content substitution.</p>
+     *
+     * <p><strong>Template Categories:</strong></p>
+     * <ul>
+     * <li>Common validation messages (null checks, equality, predicates, type validation)</li>
+     * <li>String validation messages (length, format, content, whitespace, case validation)</li>
+     * <li>Number validation messages (boundaries, ranges, sign validation)</li>
+     * <li>DateTime validation messages (temporal constraints, ranges, business rules)</li>
+     * <li>Time validation messages (time-of-day constraints, periods, zones)</li>
+     * <li>Collection validation messages (size, content, element validation)</li>
+     * <li>Allowed values validation messages (enumeration, set membership)</li>
+     * </ul>
+     */
     private void initializeDefaultMessages() {
         // Common validation messages
         messageTemplates.put("common.not_null", "Field '{field}' must not be null");
@@ -127,6 +222,32 @@ public class DefaultMessageProvider implements ValidationMessageProvider {
         messageTemplates.put("allowed.in_range", "Field '{field}' must be within the allowed range");
     }
 
+    /**
+     * Compiles a message template into structured parts for efficient parameter substitution.
+     *
+     * <p>This method parses a template string containing placeholders in curly brace syntax
+     * and converts it into a list of structured components. Each component is either static
+     * text or a parameter placeholder, enabling efficient message generation without
+     * repeated parsing overhead.</p>
+     *
+     * <p><strong>Parsing Logic:</strong></p>
+     * <ul>
+     * <li>Text outside curly braces becomes TEXT parts</li>
+     * <li>Content inside curly braces becomes PLACEHOLDER parts</li>
+     * <li>Malformed braces (missing closing brace) are treated as literal text</li>
+     * <li>Empty placeholders are preserved as valid PLACEHOLDER parts</li>
+     * </ul>
+     *
+     * <p><strong>Example:</strong></p>
+     * <pre>
+     * Input: "Field '{field}' must be at least {min} characters"
+     * Output: [TEXT("Field '"), PLACEHOLDER("field"), TEXT("' must be at least "),
+     *          PLACEHOLDER("min"), TEXT(" characters")]
+     * </pre>
+     *
+     * @param template the template string to compile into structured parts
+     * @return a list of TemplatePart objects representing the parsed template structure
+     */
     private List<TemplatePart> compileTemplate(String template) {
         List<TemplatePart> parts = new ArrayList<>();
         StringBuilder textBuilder = new StringBuilder();
@@ -168,6 +289,25 @@ public class DefaultMessageProvider implements ValidationMessageProvider {
         return parts;
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * <p><strong>Implementation Details:</strong></p>
+     * <ul>
+     * <li>Uses template compilation caching for optimal performance</li>
+     * <li>Provides fallback message for unknown validation codes</li>
+     * <li>Handles missing parameters gracefully by leaving placeholders empty</li>
+     * <li>Supports all standard validation codes defined in the framework</li>
+     * </ul>
+     *
+     * <p><strong>Performance Optimization:</strong> Templates are compiled once and cached
+     * for subsequent use, avoiding repeated parsing overhead during message generation.</p>
+     *
+     * @param code the validation code identifying the type of validation failure
+     * @param identifier the validation identifier (used for context but not directly in message generation)
+     * @param parameters map of parameter names to values for template substitution
+     * @return human-readable error message with placeholders replaced by parameter values
+     */
     @Override
     public String getMessage(String code, ValidationIdentifier identifier, Map<String, Object> parameters) {
         String template = messageTemplates.getOrDefault(code, "Validation failed for field '{field}'");
@@ -191,11 +331,46 @@ public class DefaultMessageProvider implements ValidationMessageProvider {
         return result.toString();
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * <p><strong>Implementation Details:</strong> This implementation supports all standard
+     * validation codes defined in {@link com.fluentval.validator.metadata.DefaultValidationCode}.
+     * It returns {@code true} for any code that has a corresponding message template
+     * in the internal messageTemplates map.</p>
+     *
+     * @param code the validation code to check for support
+     * @return {@code true} if this provider has a message template for the specified code
+     */
     @Override
     public boolean supports(String code) {
         return messageTemplates.containsKey(code);
     }
 
+    /**
+     * Sets or updates a message template for the specified validation code.
+     *
+     * <p>This method allows runtime customization of error messages by adding new templates
+     * or overriding existing ones. When a template is updated, any cached compiled version
+     * is invalidated to ensure the new template is used for subsequent message generation.</p>
+     *
+     * <p><strong>Use Cases:</strong></p>
+     * <ul>
+     * <li>Customizing default error messages for specific business requirements</li>
+     * <li>Adding support for custom validation codes</li>
+     * <li>Localizing messages for different languages or regions</li>
+     * <li>Providing domain-specific terminology in error messages</li>
+     * </ul>
+     *
+     * <p><strong>Template Syntax:</strong> Templates should use curly brace syntax for
+     * placeholders (e.g., "Field '{field}' must contain at least {minLength} characters").
+     * Available parameters depend on the validation type and are defined in
+     * {@link MessageParameter}.</p>
+     *
+     * @param code the validation code to associate with the template
+     * @param template the message template with placeholder syntax for parameter substitution
+     * @throws IllegalArgumentException if code or template is null
+     */
     public void setMessageTemplate(String code, String template) {
         messageTemplates.put(code, template);
         compiledTemplates.remove(template);
