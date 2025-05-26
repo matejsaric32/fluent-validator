@@ -4,6 +4,29 @@ package com.fluentval.validator.metadata;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+/**
+ * Enumeration of standard validation codes used throughout the FluentVal validation framework.
+ * This enum provides a centralized catalog of all built-in validation types, organized by
+ * validation domain and purpose, with each code mapping to a specific validation rule and
+ * corresponding error message template.
+ *
+ * <p>DefaultValidationCode serves as the foundation for validation metadata creation and
+ * error message generation, providing consistent categorization and identification of
+ * validation failures across the entire validation framework.</p>
+ *
+ * <p><strong>Code Structure:</strong> Each validation code follows a hierarchical naming convention
+ * using dot notation (e.g., "domain.validation_type") to provide clear categorization and
+ * support for internationalization and message template organization.</p>
+ *
+ * <p><strong>Usage:</strong> These codes are primarily used internally by validation metadata
+ * classes and message providers, but can also be referenced directly when creating custom
+ * validation rules or error handling logic.</p>
+ *
+ * @author Matej Šarić
+ * @since 1.2.3
+ * @see ValidationMetadata
+ * @see com.fluentval.validator.message.ValidationMessageProvider
+ */
 @AllArgsConstructor
 @Getter
 public enum DefaultValidationCode {
